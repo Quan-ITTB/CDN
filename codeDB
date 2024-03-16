@@ -156,7 +156,7 @@ VALUES (N'npp01',N'Ninza','0237562208',N'Hà Nội'),
 	('npp010',N'Thanh Bình','039482635',N'Hà Nội');
 
 --Thêm bản ghi cho bảng sản phẩm
-INSERT INTO  tbl_SANPHAM(sIDSP,sIDHang,sIDNPP,sTenSeries,iBaoHanh,			sTenCPU,iDungLuongRAM,sMauSac,sLoaiODia,iDungLuongDia,iNamSX,iGiaBan,iTonKho)
+INSERT INTO  tbl_SANPHAM(sIDSP,sIDHang,sIDNPP,sTenSeries,iBaoHanh,sTenCPU,iDungLuongRAM,sMauSac,sLoaiODia,iDungLuongDia,iNamSX,iGiaBan,iTonKho)
 VALUES ('sp01','hsx01','npp01','Vivobook',24,'Intel Core I5',8,N'Đen','SSD NVME',512,2022,15000,10),
 ('sp02','hsx01','npp05','ROG Strix',24,'Intel Core I7',16,N'Đen','SSD NVME',512,2022,24000,20),
 ('sp03','hsx03','npp07','OMEN',12,'AMD Ryzen 7',8,N'Đen','SSD NVME',512,2021,27000,15),
