@@ -86,20 +86,41 @@ class RegisterWindow(QMainWindow, Ui_registerWindow):
     def clickHandler(self):
         user = self.txtUsername.text()
         password = self.txtPassword.text()
-        self.user = user
+
         db = mdb.connect('localhost','root','','cdn_btl')
         cursor = db.cursor()
-        cursor.callproc("prCheckAndInsertUser", (user,password))
-        results = cursor.fetchone()
-        print(user + password)
-        print(results)
-        if(1 in results):
-            QMessageBox.information(self,"Thành công","Thành công")
-            self.hide()
-            self.registerWindow = LoginWindow(self.user)  
-            self.registerWindow.show()    
-        else:
-            QMessageBox.information(self,"Thất bại","Thất bại")
+
+        try:
+            # Kiểm tra xem tài khoản đã tồn tại chưa
+            cursor.execute("SELECT COUNT(*) FROM tbl_user WHERE username = %s", (user,))
+            count = cursor.fetchone()[0]
+
+            if count > 0:
+                QMessageBox.warning(self, "Lỗi", "Tài khoản đã tồn tại!")
+            else:
+                # Thực thi stored procedure để đăng ký user
+                cursor.callproc("sp_AddUser", (user, password))
+
+                # Lấy kết quả trả về từ stored procedure
+                cursor.execute("SELECT sp_AddUser")  # Thay đổi tên procedure tùy theo tên bạn đã đặt
+                result = cursor.fetchone()[0]
+
+                # Kiểm tra kết quả và hiển thị thông báo
+                if result == 1:
+                    QMessageBox.information(self, "Thành công", "Đăng ký thành công!")
+                    self.hide()
+                    self.loginWindow = LoginWindow(user)  # Chuyển user name sang cửa sổ đăng nhập
+                    self.loginWindow.show()
+                else:
+                    QMessageBox.warning(self, "Thất bại", "Đăng ký thất bại!")
+
+        except mdb.connector.Error as err:
+            print(f"Lỗi MySQL: {err}")
+            QMessageBox.critical(self, "Lỗi", "Đã xảy ra lỗi khi thực thi.")
+
+        finally:
+            cursor.close()
+            db.close()
         
 app = QApplication([])
 Window = LoginWindow()
