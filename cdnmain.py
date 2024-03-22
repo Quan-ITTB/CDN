@@ -42,13 +42,13 @@ class LoginWindow(QMainWindow, Ui_LoginWindow):
     def clickHandler(self):
         
         db = mdb.connect('localhost','root','','cdn_btl')
-        cursor = db.cursor()
+        query = db.cursor()
         try:
             user_name = self.txtUsername.text()
             password = self.txtPassword.text()
-            cursor.callproc("prCheck_Login", (user_name, password))
+            query.callproc("prCheck_Login", (user_name, password))
 
-            results = cursor.fetchone()
+            results = query.fetchone()
             if(results):
                 self.hide()
                 self.homeWindow = HomeWindow()
@@ -64,7 +64,7 @@ class LoginWindow(QMainWindow, Ui_LoginWindow):
 
         finally:
             # Đóng kết nối
-            cursor.close()
+            query.close()
             db.close()
         
 
@@ -78,49 +78,53 @@ class RegisterWindow(QMainWindow, Ui_registerWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.btnRegister.clicked.connect(self.clickHandler)
-    
-    def test(self,user):
-        print(f"data là: {user}")    
-        
-    def clickHandler(self):
-        user = self.txtUsername.text()
-        password = self.txtPassword.text()
-
-        db = mdb.connect('localhost','root','','cdn_btl')
-        cursor = db.cursor()
-
+        self.btnRegister.clicked.connect(self.clickHandler)   
+    def checkUserExists(self, username):
         try:
-            # Kiểm tra xem tài khoản đã tồn tại chưa
-            cursor.execute("SELECT COUNT(*) FROM tbl_user WHERE username = %s", (user,))
-            count = cursor.fetchone()[0]
+            # Kết nối đến cơ sở dữ liệu MySQL
+            db= mdb.connect('localhost','root','','cdn_btl')
+            query = db.cursor()
 
-            if count > 0:
-                QMessageBox.warning(self, "Lỗi", "Tài khoản đã tồn tại!")
-            else:
-                # Thực thi stored procedure để đăng ký user
-                cursor.callproc("sp_AddUser", (user, password))
 
-                # Lấy kết quả trả về từ stored procedure
-                cursor.execute("SELECT sp_AddUser")  # Thay đổi tên procedure tùy theo tên bạn đã đặt
-                result = cursor.fetchone()[0]
+            # Kiểm tra xem tên người dùng đã tồn tại trong cơ sở dữ liệu hay chưa
+            query.execute("SELECT COUNT(*) FROM tbl_user WHERE sUserName = %s", (username,))
+            count = query.fetchone()[0]
 
-                # Kiểm tra kết quả và hiển thị thông báo
-                if result == 1:
-                    QMessageBox.information(self, "Thành công", "Đăng ký thành công!")
-                    self.hide()
-                    self.loginWindow = LoginWindow(user)  # Chuyển user name sang cửa sổ đăng nhập
-                    self.loginWindow.show()
-                else:
-                    QMessageBox.warning(self, "Thất bại", "Đăng ký thất bại!")
+            # Đóng kết nối
+            query.close()
+            db.close()
+
+            return count > 0
 
         except mdb.connector.Error as err:
             print(f"Lỗi MySQL: {err}")
-            QMessageBox.critical(self, "Lỗi", "Đã xảy ra lỗi khi thực thi.")
+            return False
+  
+    def clickHandler(self):
+        username = self.txtUsername.text()
+        password = self.txtPassword.text()
+        if self.checkUserExists(username):
+            QMessageBox.warning(self, "Lỗi", "Tài khoản đã tồn tại!")
+        else:
+            try:
+                # Kết nối đến cơ sở dữ liệu MySQL
+                db= mdb.connect('localhost','root','','cdn_btl')
+                query = db.cursor()
 
-        finally:
-            cursor.close()
-            db.close()
+            # Gọi stored procedure để thêm người dùng
+                query.callproc("sp_AddUser", (username, password))
+                db.commit()
+
+            # Hiển thị thông báo thành công
+                QMessageBox.information(self, "Thành công", "Đã đăng ký tài khoản thành công!")
+
+            # Đóng kết nối
+                query.close()
+                db.close()
+
+            except mdb.connector.Error as err:
+                print(f"Lỗi MySQL: {err}")
+                QMessageBox.critical(self, "Lỗi", "Đã xảy ra lỗi khi thực thi.")
         
 app = QApplication([])
 Window = LoginWindow()
