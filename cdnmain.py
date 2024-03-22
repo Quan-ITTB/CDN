@@ -7,6 +7,8 @@ from PyQt6.QtCore import *
 import sys
 import MySQLdb as mdb
 
+
+data = "test"
 class Communicate(QObject):
     dataChanged = pyqtSignal(str)  
     def __init__(self):
@@ -33,14 +35,14 @@ class LoginWindow(QMainWindow, Ui_LoginWindow):
     def __init__(self, user = ""):
         super().__init__()
         self.setupUi(self)
-        self.cmt = Communicate()
         self.txtUsername.setText(user)
+        self.hide()
+        self.homeWindow = HomeWindow()
+        self.homeWindow.show()
         self.btnLogin.clicked.connect(self.clickHandler)
         self.btnRegister.clicked.connect(self.showRegisterWindow)
 
-        
     def clickHandler(self):
-        
         db = mdb.connect('localhost','root','','cdn_btl')
         query = db.cursor()
         try:
@@ -50,14 +52,17 @@ class LoginWindow(QMainWindow, Ui_LoginWindow):
 
             results = query.fetchone()
             if(results):
-                self.hide()
-                self.homeWindow = HomeWindow()
-                self.cmt.dataChanged.emit(password)
-                self.homeWindow.show()
+                # self.hide()
+                # self.homeWindow = HomeWindow()
+                self.homeWindow.communicate.dataChanged.emit(user_name)
+                # self.homeWindow.show()
             else:
                 print("Login thất bại!")
-                self.cmt._data = "thất bại"       
-
+                global data 
+                data = "Thất bại"
+                # self.homeWindow = HomeWindow()
+                # self.homeWindow.show()
+                self.homeWindow.label.setText(data)
 
         except mdb.Error as e:
             print("Error:", e)
@@ -96,7 +101,7 @@ class RegisterWindow(QMainWindow, Ui_registerWindow):
 
             return count > 0
 
-        except mdb.connector.Error as err:
+        except mdb.Error as err:
             print(f"Lỗi MySQL: {err}")
             return False
   
@@ -117,12 +122,13 @@ class RegisterWindow(QMainWindow, Ui_registerWindow):
 
             # Hiển thị thông báo thành công
                 QMessageBox.information(self, "Thành công", "Đã đăng ký tài khoản thành công!")
-
+                self.loginWindow = LoginWindow(user=username)
+                self.loginWindow.show()
             # Đóng kết nối
                 query.close()
                 db.close()
 
-            except mdb.connector.Error as err:
+            except mdb.Error as err:
                 print(f"Lỗi MySQL: {err}")
                 QMessageBox.critical(self, "Lỗi", "Đã xảy ra lỗi khi thực thi.")
         
