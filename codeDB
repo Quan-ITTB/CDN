@@ -298,21 +298,14 @@ DELIMITER ;
 -- Tạo Proc đăng ký user
 DELIMITER //
 
-CREATE PROCEDURE prCheckAndInsertUser (IN p_username VARCHAR(255),IN p_password VARCHAR(255))
+CREATE PROCEDURE sp_AddUser(
+    IN p_username VARCHAR(255),
+    IN p_password VARCHAR(255)
+)
 BEGIN
-    DECLARE user_count INT;
-
-    -- Kiểm tra xem tên người dùng đã tồn tại hay chưa
-    SELECT COUNT(*) INTO user_count FROM tbl_user WHERE tbl_user.sUserName = p_username;
-
-    -- Nếu tên người dùng không tồn tại, thêm mới vào bảng user
-    IF user_count = 0 THEN
-        INSERT INTO tbl_user VALUES (p_username,p_password);
-        SELECT 1;
-    ELSE
-        SELECT 0;
-    END IF;
-END //
+    INSERT INTO tbl_user (username, password)
+    VALUES (p_username, p_password);
+END//
 
 DELIMITER ;
 
