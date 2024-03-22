@@ -7,6 +7,8 @@ from PyQt6.QtCore import *
 import sys
 import MySQLdb as mdb
 
+
+data = "test"
 class Communicate(QObject):
     dataChanged = pyqtSignal(str)  
     def __init__(self):
@@ -33,31 +35,33 @@ class LoginWindow(QMainWindow, Ui_LoginWindow):
     def __init__(self, user = ""):
         super().__init__()
         self.setupUi(self)
-        self.cmt = Communicate()
         self.txtUsername.setText(user)
+        self.hide()
+        self.homeWindow = HomeWindow()
+        self.homeWindow.show()
         self.btnLogin.clicked.connect(self.clickHandler)
         self.btnRegister.clicked.connect(self.showRegisterWindow)
 
-        
     def clickHandler(self):
-        
         db = mdb.connect('localhost','root','','cdn_btl')
         cursor = db.cursor()
         try:
             user_name = self.txtUsername.text()
             password = self.txtPassword.text()
             cursor.callproc("prCheck_Login", (user_name, password))
-
             results = cursor.fetchone()
             if(results):
-                self.hide()
-                self.homeWindow = HomeWindow()
-                self.cmt.dataChanged.emit(password)
-                self.homeWindow.show()
+                # self.hide()
+                # self.homeWindow = HomeWindow()
+                self.homeWindow.communicate.dataChanged.emit(user_name)
+                # self.homeWindow.show()
             else:
                 print("Login thất bại!")
-                self.cmt._data = "thất bại"       
-
+                global data 
+                data = "Thất bại"
+                # self.homeWindow = HomeWindow()
+                # self.homeWindow.show()
+                self.homeWindow.label.setText(data)
 
         except mdb.Error as e:
             print("Error:", e)
