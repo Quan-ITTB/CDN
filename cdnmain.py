@@ -101,7 +101,7 @@ class RegisterWindow(QMainWindow, Ui_registerWindow):
 
             return count > 0
 
-        except mdb.connector.Error as err:
+        except mdb.Error as err:
             print(f"Lỗi MySQL: {err}")
             return False
   
@@ -122,12 +122,13 @@ class RegisterWindow(QMainWindow, Ui_registerWindow):
 
             # Hiển thị thông báo thành công
                 QMessageBox.information(self, "Thành công", "Đã đăng ký tài khoản thành công!")
-
+                self.loginWindow = LoginWindow(user=username)
+                self.loginWindow.show()
             # Đóng kết nối
                 query.close()
                 db.close()
 
-            except mdb.connector.Error as err:
+            except mdb.Error as err:
                 print(f"Lỗi MySQL: {err}")
                 QMessageBox.critical(self, "Lỗi", "Đã xảy ra lỗi khi thực thi.")
         
