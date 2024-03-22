@@ -277,3 +277,42 @@ VALUES ('pyc01','sp05',N'Gãy bản lề'),
 		('pyc08','sp05',N'Vỡ màn hình'),
 		('pyc09','sp04',N'Mất touchpad'),
 		('pyc10','sp01',N'Hỏng loa ngoài');
+
+
+-- Tạo bảng thông tin người dùng
+CREATE TABLE `tbl_user` (
+	`sUserName` VARCHAR(256) NOT NULL ,
+ 	`sPassword` VARCHAR(256) NOT NULL ) ENGINE = InnoDB;
+-- Thêm bản ghi cho user
+	INSERT INTO tbl_user VALUES('quan','1')
+-- Tạo PROC đăng nhập
+DELIMITER //
+
+CREATE PROCEDURE prCheck_Login (IN user_name VARCHAR(255), IN password VARCHAR(255))
+BEGIN
+    SELECT * FROM tbl_user WHERE sUserName = user_name AND sPassword = password;
+END //
+
+DELIMITER ;
+
+-- Tạo Proc đăng ký user
+DELIMITER //
+
+CREATE PROCEDURE prCheckAndInsertUser (IN p_username VARCHAR(255),IN p_password VARCHAR(255))
+BEGIN
+    DECLARE user_count INT;
+
+    -- Kiểm tra xem tên người dùng đã tồn tại hay chưa
+    SELECT COUNT(*) INTO user_count FROM tbl_user WHERE tbl_user.sUserName = p_username;
+
+    -- Nếu tên người dùng không tồn tại, thêm mới vào bảng user
+    IF user_count = 0 THEN
+        INSERT INTO tbl_user VALUES (p_username,p_password);
+        SELECT 1;
+    ELSE
+        SELECT 0;
+    END IF;
+END //
+
+DELIMITER ;
+

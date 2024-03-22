@@ -9,43 +9,64 @@ import MySQLdb as mdb
 
 class Communicate(QObject):
     dataChanged = pyqtSignal(str)  
+    def __init__(self):
+        super().__init__()
+        self._data = ""
+    @property
+    def data(self):
+        return self._data
+    @data.setter
+    def data(self, value):
+        self._data = value
+        self.dataChanged.emit(value)
     
 class HomeWindow(QMainWindow, Ui_HomeWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.communicate = Communicate()
+        self.communicate.dataChanged.connect(self.receiveData)   
     def receiveData(self, data):
         self.label.setText(data)
-
-
-        
+   
 class LoginWindow(QMainWindow, Ui_LoginWindow):
-    def __init__(self, user = "Quân"):
+    def __init__(self, user = ""):
         super().__init__()
         self.setupUi(self)
+        self.cmt = Communicate()
         self.txtUsername.setText(user)
         self.btnLogin.clicked.connect(self.clickHandler)
         self.btnRegister.clicked.connect(self.showRegisterWindow)
 
         
     def clickHandler(self):
-        user = self.txtUsername.text()
-        password = self.txtPassword.text()
-        db = mdb.connect('localhost','root','','login_app')
-        query = db.cursor()
-        query.execute("select * from agent_list")
-        kt = query.fetchone()
-        if(kt):
-            print("Login thành công!")
-            self.us = user
-            self.hide()
-            self.homeWindow = HomeWindow()
-            self.homeWindow.communicate.dataChanged.connect(self.homeWindow.receiveData)
-            self.homeWindow.show()
-            self.homeWindow.communicate.dataChanged.emit(self.us)
-        else:
-            print("Login thất bại!")       
+        
+        db = mdb.connect('localhost','root','','cdn_btl')
+        cursor = db.cursor()
+        try:
+            user_name = self.txtUsername.text()
+            password = self.txtPassword.text()
+            cursor.callproc("prCheck_Login", (user_name, password))
+
+            results = cursor.fetchone()
+            if(results):
+                self.hide()
+                self.homeWindow = HomeWindow()
+                self.cmt.dataChanged.emit(password)
+                self.homeWindow.show()
+            else:
+                print("Login thất bại!")
+                self.cmt._data = "thất bại"       
+
+
+        except mdb.Error as e:
+            print("Error:", e)
+
+        finally:
+            # Đóng kết nối
+            cursor.close()
+            db.close()
+        
 
     def showRegisterWindow(self):
         self.hide()
@@ -58,28 +79,27 @@ class RegisterWindow(QMainWindow, Ui_registerWindow):
         super().__init__()
         self.setupUi(self)
         self.btnRegister.clicked.connect(self.clickHandler)
+    
+    def test(self,user):
+        print(f"data là: {user}")    
         
     def clickHandler(self):
         user = self.txtUsername.text()
         password = self.txtPassword.text()
         self.user = user
-        db = mdb.connect('localhost','root','','login_app')
-        query = db.cursor()
-        query.execute("select * from user_list where user='"+ user + "'")
-        kt = query.fetchone()
-        if(kt):
-            QMessageBox.information(self,"Thất bại","Đã tồn tại!")
-        else:
-            sql = "INSERT INTO user_list (user, pass) VALUES (%s, %s)"
-            val = (user, password)
-            query.execute(sql, val)
-            db.commit()
-            QMessageBox.information(self,"Thành công","Đã thêm thành công!")
+        db = mdb.connect('localhost','root','','cdn_btl')
+        cursor = db.cursor()
+        cursor.callproc("prCheckAndInsertUser", (user,password))
+        results = cursor.fetchone()
+        print(user + password)
+        print(results)
+        if(1 in results):
+            QMessageBox.information(self,"Thành công","Thành công")
             self.hide()
             self.registerWindow = LoginWindow(self.user)  
             self.registerWindow.show()    
-            
-      
+        else:
+            QMessageBox.information(self,"Thất bại","Thất bại")
         
 app = QApplication([])
 Window = LoginWindow()
