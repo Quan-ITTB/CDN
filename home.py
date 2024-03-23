@@ -24,6 +24,12 @@ class Ui_HomeWindow(object):
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label.setObjectName("label")
+        self.btnRegisterHome = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.btnRegisterHome.setGeometry(QtCore.QRect(400, 360, 75, 23))
+        self.btnRegisterHome.setObjectName("btnRegisterHome")
+        self.btnLoginHome = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.btnLoginHome.setGeometry(QtCore.QRect(400, 400, 75, 23))
+        self.btnLoginHome.setObjectName("btnLoginHome")
         HomeWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=HomeWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -40,3 +46,5 @@ class Ui_HomeWindow(object):
         _translate = QtCore.QCoreApplication.translate
         HomeWindow.setWindowTitle(_translate("HomeWindow", "MainWindow"))
         self.label.setText(_translate("HomeWindow", "HOME "))
+        self.btnLoginHome.setText(_translate("LoginWindow", "Login"))
+        self.btnRegisterHome.setText(_translate("LoginWindow", "Register"))
