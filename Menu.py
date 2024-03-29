@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(250, 130, 281, 191))
         self.label_3.setText("")
-        self.label_3.setPixmap(QtGui.QPixmap("../Downloads/1.jpg"))
+        self.label_3.setPixmap(QtGui.QPixmap("logo.jpg"))
         self.label_3.setScaledContents(True)
         self.label_3.setObjectName("label_3")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -91,7 +91,6 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
         # Tạo một instance của trang DSBH
         self.dsbh_window = Banhang()
         # Hiển thị trang DSBH
-        
         self.dsbh_window.show()   
 
 app = QApplication (sys.argv) 
