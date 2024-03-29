@@ -38,6 +38,9 @@ class Ui_HomeWindow(object):
         self.statusbar = QtWidgets.QStatusBar(parent=HomeWindow)
         self.statusbar.setObjectName("statusbar")
         HomeWindow.setStatusBar(self.statusbar)
+        self.label = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(110, 170, 47, 13))
+        self.label.setObjectName("label")
 
         self.retranslateUi(HomeWindow)
         QtCore.QMetaObject.connectSlotsByName(HomeWindow)
