@@ -7,7 +7,7 @@
 
 from  PyQt6 import QtCore,QtGui,QtWidgets,uic
 from PyQt6.QtWidgets import *
-from DSBanH import DSBH
+from DSBH import Banhang
 from PyQt6.uic import loadUi
 
 import sys
@@ -89,7 +89,7 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
 # code tab bán hàng
     def show_DSBH(self):
         # Tạo một instance của trang DSBH
-        self.dsbh_window = DSBH()
+        self.dsbh_window = Banhang()
         # Hiển thị trang DSBH
         
         self.dsbh_window.show()   
