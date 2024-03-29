@@ -53,7 +53,6 @@ class HomeWindow(QMainWindow, Ui_HomeWindow):
    
 class LoginWindow(QMainWindow, Ui_LoginWindow):
     def __init__(self, user = ""):
-    def __init__(self, user = ""):
         super().__init__()
         self.setupUi(self)
         self.txtUsername.setText(user)
@@ -118,7 +117,6 @@ class LoginWindow(QMainWindow, Ui_LoginWindow):
                 # self.homeWindow.show()
             else:
                 print("Login thất bại!")
-                global data 
                 data = "Thất bại"
                 # self.homeWindow = HomeWindow()
                 # self.homeWindow.show()
