@@ -50,9 +50,10 @@ class LoginWindow(QMainWindow, Ui_LoginWindow):
         print(f"Đã chạy vào receive  : ${data}")
         self.show()        
     def receiveData2(self, data):
+        self.show()
         self.txtUsername.setText(data)
         print(f"Đã chạy vào receive 2 : ${data}")
-        self.show()
+        
     def clickHandler(self):
         db = mdb.connect('localhost','root','','cdn_btl')
         query = db.cursor()
@@ -135,9 +136,10 @@ class RegisterWindow(QMainWindow, Ui_registerWindow):
                 db.commit()
 
             # Hiển thị thông báo thành công
+                
                 QMessageBox.information(self, "Thành công", "Đã đăng ký tài khoản thành công!")
                 self.register_success_signal.dataChanged.emit("Register -> Home")
-                self.hide()
+                
             # Đóng kết nối
                 query.close()
                 db.close()
