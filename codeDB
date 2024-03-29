@@ -1,123 +1,194 @@
---Tạo và sử dụng cơ sở dữ liệu
-CREATE DATABASE CDN_BTL;
-use CDN_BTL;
+CREATE DATABASE KinhDoanhMayTinh;
 
-
---Tạo bảng Hãng sản xuất
-CREATE TABLE tbl_HANGSX (
-	sIDHang NVARCHAR(10) not null,
-	sTenHang NVARCHAR (30) not null,
-	sQuocGia NVARCHAR (30) not null,
-	PRIMARY KEY (sIDHang)
+CREATE TABLE tblNhanVien (
+    sMaNV VARCHAR(10) PRIMARY KEY,
+    sTenNV VARCHAR(25) NOT NULL,
+    dNgaySinh DATE NOT NULL,
+    sGioiTinh ENUM('Nam', 'Nữ') NOT NULL,
+    sDiaChi VARCHAR(50) NOT NULL,
+    sSDT VARCHAR(10) NOT NULL,
+    fHSL FLOAT  NOT NULL,
+    fLCB FLOAT NOT NULL ,
+    dNgayVaoLam DATE NOT NULL
 );
 
---Tạo bảng nhà phân phối
-CREATE TABLE tbl_NHAPP (
-	sIDNPP NVARCHAR(10) not null,
-	sTenNPP NVARCHAR(30) not null,
-	sSDT NVARCHAR(12) not null,
-	sDiaChi NVARCHAR(50) not null,
-	PRIMARY KEY (sIDNPP)
+CREATE TABLE tblNhaCC(
+    sTenNCC VARCHAR(25) PRIMARY KEY,
+    sSDT VARCHAR(10),
+    sDiaChi VARCHAR(50)
 );
 
---Tạo bảng sản phẩm
-CREATE TABLE tbl_SANPHAM (
-	sIDSP NVARCHAR(10) NOT NULL,
-	sIDHang NVARCHAR(10) not null,
-	sIDNPP NVARCHAR (10) not null,
-	sTenSeries NVARCHAR(30) not null,
-	iBaoHanh int not null,
-	sTenCPU NVARCHAR (30) not null,
-	iDungLuongRAM int not null,
-	sMauSac NVARCHAR(30) not null,
-	sLoaiODia NVARCHAR (10) not null,
-	iDungLuongDia int not null,
-	iNamSX int not null,
-	iGiaBan int not null,
-	iTonKho int not null,
-	PRIMARY KEY (sIDSP),
-	CONSTRAINT fk_sp_idHang
-	FOREIGN KEY (sIDHang) REFERENCES tbl_HANGSX (sIDHang),
-	CONSTRAINT fk_sp_idNPP
-	FOREIGN KEY (sIDNPP) REFERENCES tbl_NHAPP (sIDNPP)
+CREATE TABLE tblSanPham(
+    sMaSP VARCHAR(10) PRIMARY KEY,
+    sTenSP VARCHAR(25) NOT NULL,
+    sHangSX VARCHAR(25) NOT NULL,
+    iNamSX INT NOT NULL,
+    fDonGiaNhap FLOAT  NOT NULL,
+    fDonGiaXuat FLOAT NOT NULL
 );
 
--- Tạo bảng khách hàng
-CREATE TABLE tbl_KHACHHANG (
-	sIDKH NVARCHAR(10) not null,
-	sTenKhach NVARCHAR(30) not null,
-	sSDT NVARCHAR(12) not null,
-	sDiaChi NVARCHAR(50) not null,
-	sEmail NVARCHAR (50) not null,
-	PRIMARY KEY (sIDKH)
+CREATE TABLE tblHDNhap(
+    sMaHDN VARCHAR(10) PRIMARY KEY,
+    sMaNV VARCHAR(10) REFERENCES tblNhanVien(sMaNV) ON UPDATE CASCADE ON DELETE CASCADE,
+    dNgayNhap DATE NOT NULL,
+    sTenNCC VARCHAR(25) REFERENCES tblNhaCC(sTenNCC) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE tbl_NHANVIEN (
-	sIDNV NVARCHAR(10) not null,
-	sTenNV NVARCHAR(30) not null, 
-	dNgaySinh date not null,
-	dNgayVaoLam date not null,
-	sGioiTinh NVARCHAR(10) not null,
-	sSDT NVARCHAR(12) not null, 
-	sViTri NVARCHAR (30) not null,
-	fHSL float not null,
-	PRIMARY KEY (sIDNV)
+CREATE TABLE tblKhachHang(
+    sTenKH VARCHAR(25) NOT NULL,
+    sSDTKH VARCHAR(10) PRIMARY KEY,
+    sEmail VARCHAR(50),
+    sDiaChi VARCHAR(50) NOT NULL
 );
 
---Tạo bảng hóa đơn bán hàng
-CREATE TABLE tbl_HOADONBAN (
-	sIDHD NVARCHAR(10) not null, 
-	sIDNV NVARCHAR(10) not null, 
-	sIDKH NVARCHAR(10) not null, 
-	dNgaylap date not null, 
-	PRIMARY KEY (sIDHD),
-	CONSTRAINT fk_hdb_idnv FOREIGN KEY (sIDNV) REFERENCES tbl_NHANVIEN (sIDNV),
-	CONSTRAINT fk_hdb_idkh FOREIGN KEY (sIDKH) REFERENCES tbl_KHACHHANG (sIDKH)
+CREATE TABLE tblHDXuat(
+    sMaHDX VARCHAR(10) PRIMARY KEY ,
+    sMaNV VARCHAR(10) REFERENCES tblNhanVien(sMaNV) ON UPDATE CASCADE ON DELETE CASCADE,
+    dNgayLap DATE NOT NULL,
+    sSDTKH VARCHAR(10) REFERENCES tblKhachHang(sSDTKH) ON UPDATE CASCADE ON DELETE CASCADE,
+    sHinhThucTT ENUM('Tiền mặt', 'Thẻ ngân hàng') NOT NULL
 );
 
-
---Tạo bảng đơn nhập hàng
-CREATE TABLE tbl_DONNHAP (
-	sIDDonNhap NVARCHAR(10) not null, 
-	sIDNV NVARCHAR(10) not null, 
-	dNgayNhap NVARCHAR(10) not null,
-	PRIMARY KEY (sIDDonNhap),
-	CONSTRAINT fk_dn_idnv FOREIGN KEY (sIDNV) REFERENCES tbl_NHANVIEN (sIDNV)
+CREATE TABLE tblCTNhap(
+    sMaHDN VARCHAR(10),
+    sMaSP VARCHAR(10),
+    iSoLuong INT NOT NULL ,
+    fDonGiaNhap FLOAT,
+    PRIMARY KEY (sMaHDN, sMaSP),
+    FOREIGN KEY (sMaHDN) REFERENCES tblHDNhap(sMaHDN) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (sMaSP) REFERENCES tblSanPham(sMaSP) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
---Tạo bảng phiếu yêu cầu bảo hành
-CREATE TABLE tbl_PHIEUYCBH (
-	sIDPYC NVARCHAR(10) not null, 
-	sIDNV NVARCHAR(10) not null, 
-	sIDKH NVARCHAR(10) not null, 
-	dNgayYC date not null,
-	PRIMARY KEY (sIDPYC),
-	CONSTRAINT fk_pycbh_idnv FOREIGN KEY (sIDNV) REFERENCES tbl_NHANVIEN (sIDNV),
-	CONSTRAINT fk_pycbh_idnpp FOREIGN KEY (sIDKH) REFERENCES tbl_KHACHHANG (sIDKH)
+CREATE TABLE tblCTXuat(
+    sMaHDX VARCHAR(10),
+    sMaSP VARCHAR(10),
+    iSoLuong INT NOT NULL,
+    fDonGiaXuat FLOAT,
+    PRIMARY KEY (sMaHDX, sMaSP),
+    FOREIGN KEY (sMaHDX) REFERENCES tblHDXuat(sMaHDX) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (sMaSP) REFERENCES tblSanPham(sMaSP) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
---Tạo bảng dòng hóa đơn
-CREATE TABLE tbl_DONGHOADON (
-	sIDHD NVARCHAR(10) not null, 
-	sIDSP NVARCHAR(10) not null, 
-	iSoLuongBan int not null, 
-	iDonGiaBan int not null, 
-	PRIMARY KEY (sIDHD,sIDSP),
-	CONSTRAINT fk_dhd_hd FOREIGN KEY (sIDHD) REFERENCES tbl_HOADONBAN (sIDHD),
-	CONSTRAINT fk_dhd_sp FOREIGN KEY (sIDSP) REFERENCES tbl_SANPHAM (sIDSP)
+CREATE TABLE tblBaoHanh(
+    sMaBH VARCHAR(10) PRIMARY KEY,
+    sMaSP VARCHAR(10),
+    sMaHDX VARCHAR(10),
+    sMaNV VARCHAR(10),
+    sGhiChu VARCHAR(255),
+    FOREIGN KEY (sMaSP) REFERENCES tblSanPham(sMaSP) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (sMaHDX) REFERENCES tblHDXuat(sMaHDX) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (sMaNV) REFERENCES tblNhanVien(sMaNV) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
---Tạo bảng dòng đơn nhập hàng
-CREATE TABLE tbl_DONGDONNHAP (
-	sIDDonNhap NVARCHAR(10) not null, 
-	sIDSP NVARCHAR(10) not null, 
-	iSoLuongNhap int not null, 
-	iDonGiaNhap int not null,
-	PRIMARY KEY (sIDDonNhap,sIDSP),
-	CONSTRAINT fk_ddn_dn FOREIGN KEY (sIDDonNhap) REFERENCES tbl_DONNHAP (sIDDonNhap),
-	CONSTRAINT fk_ddn_sp FOREIGN KEY (sIDSP) REFERENCES tbl_SANPHAM (sIDSP)
-);
+<<<<<<< HEAD
+insert into tblNhanVien
+	values 
+	('20a100',N'Phạm Hồng Quân','2002-1-1',N'Nam',N'Thái Bình','0984524831',9,6000000,'2024-02-29'),
+	('20a101',N'Trần Văn Cương','2002-1-1',N'Nam',N'Lai Châu','0968597131',8,5000000,'2024-02-29'),
+	('20a102',N'Nguyễn Thị Hòa','2002-1-1',N'Nữ',N'Quảng Ninh','0305986843',7,4000000,'2024-02-29'),
+	('20a103',N'Võ Thị Hải','2002-1-1',N'Nữ',N'Phú Thọ','0983475013',6,3000000,'2024-02-29'),
+	('20a104',N'Đào Văn Tư','2002-1-10',N'Nam',N'Tuyên Quang','0982762300',7.5,5500000,'2024-02-29'),
+	('20a105',N'Vui Như Tết','2002-1-1',N'Nữ',N'Hà Nội','0987654321',6,4000000,'2024-02-29'),
+	('20a106',N'Mãi Phấn Khởi','2002-1-1',N'Nam',N'Hà Nội','037628401',7,4000000,'2024-02-29'),
+	('20a107',N'Trương Vĩnh Phúc','2002-1-1',N'Nam',N'Bắc Ninh','0986275337',6,6100000,'2024-02-29'),
+	('20a108',N'Hoàng Vĩnh Lộc','2002-1-1',N'Nam',N'Hòa Bình','0314567899',8,4000000,'2024-02-29'),
+	('20a109',N'Thượng Văn Thọ','2002-1-1',N'Nam',N'Hà Nội','0985123123',7,4800000,'2024-02-29')
 
+
+INSERT  INTO  tblNhaCC
+	VALUES 
+	('Samsung','0986866868',N'Quảng Ninh'),
+	('XiaoMi','0374123123',N'Hà Nội'),
+	('Apple','0922383383',N'Hà Nội'),
+	('Huawei','0388567567',N'Quảng Bình'),
+	('Dell','0982898989',N'Bắc Giang'),
+	('Acer','0934999999',N'Bắc Ninh'),
+	('Razer','0982633333',N'Thanh Hóa'),
+	('Asus','0976911911',N'Vĩnh Phúc'),
+	('MSI','0989789789',N'Hòa Bình'),
+	('LG','0376161166',N'Thái Nguyên')
+
+INSERT  INTO  tblSanPham
+	VALUES 
+	('ss100',N'Màn hình Samsung 24 inch','Samsung',2019,2000000,3000000),
+	('xm200',N'Webcam máy tính Xiaomi','Xiaomi',2020,300000,600000),
+	('ap300',N'Macbook air M1','Apple',2020,23000000,27000000),
+	('hw400',N'Laptop Huawei D14','Huawei',2020,15000000,18000000),
+	('d500',N'Bàn Phím Dell KB216','Dell',2018,100000,319000),
+	('ac600',N'Laptop Acer Nitro 5','Acer',2021,18000000,21000000),
+	('ra700',N'Chuột Razer V2 Pro','Razer',2019,2500000,3500000),
+	('as800',N'Main PC Asus ROG','Asus',2020,2800000,3200000),
+	('ms900',N'Ram PC G.SKILL 16GB','MSI',2021,2500000,3000000),
+	('lg000',N'Laptop LG Gram 14 inch','LG',2021,30000000,35100000)
+
+INSERT INTO tblHDNhap
+	VALUES 
+	('a100','20a101','2024-03-03','Apple'),
+	('a101','20a109','2024-03-03','LG'),
+	('a102','20a100','2024-03-03','Huawei'),
+	('a103','20a106','2024-03-03','MSI'),
+	('a104','20a105','2024-03-03','Asus'),
+	('a105','20a108','2024-03-03','Dell'),
+	('a106','20a107','2024-03-03','Samsung'),
+	('a107','20a104','2024-03-03','Razer'),
+	('a108','20a103','2024-03-03','XiaoMi'),
+	('a109','20a102','2024-03-03','Acer')
+
+INSERT  INTO  tblKhachHang
+	VALUES  
+	(N'Nguyễn Văn Bời','0866000240','boi19@gmail.com',N'Định Công'),
+	(N'Nguyễn Thị Hồng','0868696548','hongzz@gmail.com',N'Hai Bà Trưng'),
+	(N'Chư Bát Giới','0869911171','heo12@gmail.com',N'Trung Trực'),
+	(N'Lý Lâm Khải','0862135113','kaiz@gmail.com',N'Tuyên Quang'),
+	(N'Trần Văn Sơn','0862300513','sonheungmin@gmail.com',N'Nguyễn Trãi'),
+	(N'Lê Đức Mạnh','0867011150','manhto@gmail.com',N'Giáp Bát'),
+	(N'Hà Thị Hậu','0867170570','hauve@gmail.com',N'Bắc Từ Liêm'),
+	(N'Trần Thị Phương Thảo','0862808799','thaomoc@gmail.com',N'Linh Đàm'),
+	(N'Phạm Hồng Thái','0865784560','htmlcss@gmail.com',N'Phố cổ'),
+	(N'Tôn Ngộ Không','0867966612','gaynhuy@gmail.com',N'Tây Thiên')
+
+	INSERT INTO tblHDXuat(sMaHDX,sMaNV,dNgayLap,sSDTKH,sHinhThucTT)
+	VALUES
+	('HD1','20a101','2024-03-05','0868696548',N'Thẻ ngân hàng'), 
+	('HD0','20a100','2024-03-05','0866000240',N'Tiền mặt'),
+	('HD2','20a102','2024-03-05','0869911171',N'Tiền mặt'),
+	('HD3','20a103','2024-03-05','0862135113',N'Tiền mặt'),
+	('HD4','20a104','2024-03-05','0862300513',N'Thẻ ngân hàng'),
+	('HD5','20a105','2024-03-05','0867011150',N'Tiền mặt'),
+	('HD6','20a106','2024-03-05','0867170570',N'Thẻ ngân hàng'),
+	('HD7','20a107','2024-03-05','0862808799',N'Tiền mặt'),
+	('HD8','20a108','2024-03-05','0865784560',N'Tiền mặt'),
+	('HD9','20a109','2024-03-05','0867966612',N'Tiền mặt')
+
+INSERT INTO tblCTNhap
+ (sMaHDN,sMaSP,iSoLuong,fDonGiaNhap)
+ VALUES
+	('a100', 'ss100',5 ,2000000),
+	('a105', 'd500',25,100000),
+	('a106', 'ac600',12,18000000),
+	('a107', 'as800',8,2750000),
+	('a109', 'ap300',15,23000000),
+	('a108', 'hw400',5,15000000),
+	('a101', 'ra700',20,2500000),
+	('a104', 'ms900',5,2500000),
+	('a103', 'xm200',10,300000),
+	('a102', 'ss100',10,1950000)
+
+	INSERT INTO tblCTXuat
+ VALUES('HD2', 'ss100',3,2900000),
+('HD1', 'd500',2,290000),
+('HD5', 'ac600',1,20999000),
+('HD6', 'as800',2,3100000),
+('HD8', 'ap300',1,26500000),
+('HD9', 'hw400',1,17499000),
+('HD3', 'ra700',2,3468000),
+('HD4', 'ms900',2,2900000),
+('HD7', 'xm200',2,600000),
+('HD0' ,'ss100',1,3000000)
+
+INSERT INTO tblBaoHanh  VALUES
+('BH01', 'ss100', 'HD0', '20a100', 'Lỗi hở sáng màn')
+=======
 --Tạo bảng dòng yêu cầu bảo hành
 CREATE TABLE tbl_DONGYEUCAU (
 	sIDPYC NVARCHAR(10) not null, 
@@ -309,3 +380,4 @@ END//
 
 DELIMITER ;
 
+>>>>>>> 272199dcf68d714209f917b252fd9c7cf386f564

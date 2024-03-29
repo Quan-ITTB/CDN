@@ -9,6 +9,8 @@ import MySQLdb as mdb
 
 
 data = "test"
+
+data = "test"
 class Communicate(QObject):
     dataChanged = pyqtSignal(str)  
     def __init__(self):
@@ -26,9 +28,27 @@ class HomeWindow(QMainWindow, Ui_HomeWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.communicate = Communicate()
+        self.login_signal = Communicate()
+        self.register_signal = Communicate()
+        self.btnLoginHome.clicked.connect(self.emitLogin)
+        self.btnRegisterHome.clicked.connect(self.emitRegister)
+    def emitLogin(self):
+        print("emit login")
+        self.login_signal.dataChanged.emit("Home -> Login")
+        self.hide()
+    def emitRegister(self):
+        print("emit Register")
+        self.login_signal.dataChanged.emit("Home -> Register")
+        self.hide()
         self.communicate.dataChanged.connect(self.receiveData)   
     def receiveData(self, data):
+        print(f"Đã chạy vào receive 1 : ${data}")
+        self.show() 
+    def receiveData2(self, data):
+        print(f"Đã chạy vào receive 2 : ${data}")
+        self.show()
+
+   
         self.label.setText(data)
    
 class LoginWindow(QMainWindow, Ui_LoginWindow):
@@ -36,15 +56,54 @@ class LoginWindow(QMainWindow, Ui_LoginWindow):
         super().__init__()
         self.setupUi(self)
         self.txtUsername.setText(user)
+        
+        self.login_success_signal = Communicate()
         self.hide()
         self.homeWindow = HomeWindow()
         self.homeWindow.show()
         self.btnLogin.clicked.connect(self.clickHandler)
         self.btnRegister.clicked.connect(self.showRegisterWindow)
+    def receiveData(self, data):
+        self.txtUsername.setText(data)
+        print(f"Đã chạy vào receive  : ${data}")
+        self.show()        
+    def receiveData2(self, data):
+        self.show()
+        self.txtUsername.setText(data)
+        print(f"Đã chạy vào receive 2 : ${data}")
+        
 
     def clickHandler(self):
         db = mdb.connect('localhost','root','','cdn_btl')
+        db = mdb.connect('localhost','root','','cdn_btl')
         query = db.cursor()
+        try:
+            user_name = self.txtUsername.text()
+            password = self.txtPassword.text()
+            query.callproc("prCheck_Login", (user_name, password))
+
+            results = query.fetchone()
+            if(results):
+                print("emit Login -> Home")
+                self.login_success_signal.dataChanged.emit("Login Success!")
+                self.hide()
+                # self.homeWindow.show()
+            else:
+                print("Login thất bại!")
+                # global data 
+                data = "Thất bại"
+                # self.homeWindow = HomeWindow()
+                # self.homeWindow.show()
+                # self.homeWindow.label.setText(data)
+
+        except mdb.Error as e:
+            print("Error:", e)
+
+        finally:
+            # Đóng kết nối
+            query.close()
+            db.close()
+        
         try:
             user_name = self.txtUsername.text()
             password = self.txtPassword.text()
@@ -58,7 +117,6 @@ class LoginWindow(QMainWindow, Ui_LoginWindow):
                 # self.homeWindow.show()
             else:
                 print("Login thất bại!")
-                global data 
                 data = "Thất bại"
                 # self.homeWindow = HomeWindow()
                 # self.homeWindow.show()
@@ -77,12 +135,37 @@ class LoginWindow(QMainWindow, Ui_LoginWindow):
         self.hide()
         self.registerWindow = RegisterWindow()  
         self.registerWindow.show()     
-
-          
+        
 class RegisterWindow(QMainWindow, Ui_registerWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.register_success_signal = Communicate()
+        self.btnRegister.clicked.connect(self.clickHandler)  
+    def receiveData(self, data):
+        print(f"Đã chạy vào receive 1 : ${data}")
+        self.show() 
+    def checkUserExists(self, username):
+        try:
+            # Kết nối đến cơ sở dữ liệu MySQL
+            db= mdb.connect('localhost','root','','cdn_btl')
+            query = db.cursor()
+
+
+            # Kiểm tra xem tên người dùng đã tồn tại trong cơ sở dữ liệu hay chưa
+            query.execute("SELECT COUNT(*) FROM tbl_user WHERE sUserName = %s", (username,))
+            count = query.fetchone()[0]
+
+            # Đóng kết nối
+            query.close()
+            db.close()
+
+            return count > 0
+
+        except mdb.Error as err:
+            print(f"Lỗi MySQL: {err}")
+            return False
+  
         self.btnRegister.clicked.connect(self.clickHandler)   
     def checkUserExists(self, username):
         try:
@@ -107,10 +190,34 @@ class RegisterWindow(QMainWindow, Ui_registerWindow):
   
     def clickHandler(self):
         username = self.txtUsername.text()
+        username = self.txtUsername.text()
         password = self.txtPassword.text()
         if self.checkUserExists(username):
             QMessageBox.warning(self, "Lỗi", "Tài khoản đã tồn tại!")
+        if self.checkUserExists(username):
+            QMessageBox.warning(self, "Lỗi", "Tài khoản đã tồn tại!")
         else:
+            try:
+                # Kết nối đến cơ sở dữ liệu MySQL
+                db= mdb.connect('localhost','root','','cdn_btl')
+                query = db.cursor()
+
+            # Gọi stored procedure để thêm người dùng
+                query.callproc("sp_AddUser", (username, password))
+                db.commit()
+
+            # Hiển thị thông báo thành công
+                
+                QMessageBox.information(self, "Thành công", "Đã đăng ký tài khoản thành công!")
+                self.register_success_signal.dataChanged.emit("Register -> Home")
+                
+            # Đóng kết nối
+                query.close()
+                db.close()
+
+            except mdb.Error as err:
+                print(f"Lỗi MySQL: {err}")
+                QMessageBox.critical(self, "Lỗi", "Đã xảy ra lỗi khi thực thi.")
             try:
                 # Kết nối đến cơ sở dữ liệu MySQL
                 db= mdb.connect('localhost','root','','cdn_btl')
@@ -133,7 +240,14 @@ class RegisterWindow(QMainWindow, Ui_registerWindow):
                 QMessageBox.critical(self, "Lỗi", "Đã xảy ra lỗi khi thực thi.")
         
 app = QApplication([])
-Window = LoginWindow()
-Window.show()
+login_window = LoginWindow()
+register_window = RegisterWindow()
+home_window = HomeWindow()
+login_window.login_success_signal.dataChanged.connect(home_window.receiveData)
+register_window.register_success_signal.dataChanged.connect(login_window.receiveData2)
+
+home_window.login_signal.dataChanged.connect(login_window.show)
+home_window.register_signal.dataChanged.connect(register_window.receiveData)
+login_window.show()
 app.exec()
 
