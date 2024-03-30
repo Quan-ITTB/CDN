@@ -119,28 +119,49 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
                 # Hiển thị trang DSBH
                 self.dsbaohanh_window.show()     
 class NhanVien(QMainWindow, Ui_AgentWindow):
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self) 
-        self.loaddata()
-    def loaddata(self):
-        db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
-        query = db.cursor()
-        query.execute("SELECT * FROM tblNhanvien")
-        results = query.fetchall()
-        self.WidgetDSNV.setRowCount(len(results))
-        tablerow =0
-        for row in results: 
-                self.WidgetDSNV.setItem(tablerow, 0, QTableWidgetItem(str(row[0])))
-                self.WidgetDSNV.setItem(tablerow, 1, QTableWidgetItem(str(row[1])))
-                self.WidgetDSNV.setItem(tablerow, 2, QTableWidgetItem(str(row[2])))
-                self.WidgetDSNV.setItem(tablerow, 3, QTableWidgetItem(str(row[3])))
-                self.WidgetDSNV.setItem(tablerow, 4, QTableWidgetItem(str(row[4])))
-                self.WidgetDSNV.setItem(tablerow, 5, QTableWidgetItem(str(row[5])))
-                self.WidgetDSNV.setItem(tablerow, 6, QTableWidgetItem(str(row[6])))
-                self.WidgetDSNV.setItem(tablerow, 7, QTableWidgetItem(str(row[7])))
-                self.WidgetDSNV.setItem(tablerow, 8, QTableWidgetItem(str(row[8])))
-                tablerow += 1
+        def __init__(self):
+                super().__init__()
+                self.setupUi(self) 
+                self.loaddata()
+                self.WidgetDSNV.cellClicked.connect(self.click_cell)
+                
+        def loaddata(self):
+                db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
+                query = db.cursor()
+                query.execute("SELECT * FROM tblNhanvien")
+                results = query.fetchall()
+                self.WidgetDSNV.setRowCount(len(results))
+                tablerow =0
+                for row in results: 
+                        self.WidgetDSNV.setItem(tablerow, 0, QTableWidgetItem(str(row[0])))
+                        self.WidgetDSNV.setItem(tablerow, 1, QTableWidgetItem(str(row[1])))
+                        self.WidgetDSNV.setItem(tablerow, 2, QTableWidgetItem(str(row[2])))
+                        self.WidgetDSNV.setItem(tablerow, 3, QTableWidgetItem(str(row[3])))
+                        self.WidgetDSNV.setItem(tablerow, 4, QTableWidgetItem(str(row[4])))
+                        self.WidgetDSNV.setItem(tablerow, 5, QTableWidgetItem(str(row[5])))
+                        self.WidgetDSNV.setItem(tablerow, 6, QTableWidgetItem(str(row[6])))
+                        self.WidgetDSNV.setItem(tablerow, 7, QTableWidgetItem(str(row[7])))
+                        self.WidgetDSNV.setItem(tablerow, 8, QTableWidgetItem(str(row[8])))
+                        tablerow += 1
+        def click_cell(self, row, column):
+                db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
+                query = db.cursor()
+                query.execute("SELECT * FROM tblNhanvien")
+                results = query.fetchall()
+                self.WidgetDSNV.setRowCount(len(results))
+                self.txt_ma.setText(self.WidgetDSNV.item(row, 0).text())
+                self.txt_ten.setText(self.WidgetDSNV.item(row, 1).text())
+                self.txt_sdt.setText(self.WidgetDSNV.item(row, 5).text())
+                # self.txt_ngaysinh.setDate(self.WidgetDSNV.item(row, 2).text())
+                if str(self.WidgetDSNV.item(row, 3).text()) == "Nam" :
+                        self.rb_nam.isChecked = True
+                        self.rb_nu.isChecked = False
+                else:
+                        self.rb_nu.isChecked = True
+                        self.rb_nam.isChecked = False
+                self.txt_hsl.setText(self.WidgetDSNV.item(row, 6).text())
+                self.txt_luong.setText(self.WidgetDSNV.item(row, 7).text())
+                # self.txt_ngayvaolam.setText(self.WidgetDSNV.item(row, 8).text())
 app = QApplication (sys.argv) 
 Widget = QtWidgets.QStackedWidget()
 MenuT1 = MenuTong() 
