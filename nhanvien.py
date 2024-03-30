@@ -146,7 +146,7 @@ class Ui_AgentWindow(object):
         _translate = QtCore.QCoreApplication.translate
         AgentWindow.setWindowTitle(_translate("AgentWindow", "AgentWindow"))
         self.label.setText(_translate("AgentWindow", "Danh sách nhân viên"))
-        self.groupBox.setTitle(_translate("AgentWindow", "GroupBox"))
+        self.groupBox.setTitle(_translate("AgentWindow", ""))
         self.label_2.setText(_translate("AgentWindow", "Tên nhân viên"))
         self.btnDelete.setText(_translate("AgentWindow", "Loại bỏ"))
         self.btnUpdate.setText(_translate("AgentWindow", "Cập nhật"))
