@@ -11,7 +11,6 @@ from PyQt6.QtWidgets import *
 from PyQt6.uic import loadUi
 import sys
 import MySQLdb as mdb
-
 # code sử lý giao diện .UI
 class DSBH(object):
     def setupUi(self, MainWindow):
@@ -308,6 +307,7 @@ class Banhang(QMainWindow, DSBH):
         self.btnbackMN_2.clicked.connect(QApplication.instance().exit)
         self.loaddata()
         self.loaddata1()
+        self.btnbackMN_2.clicked.connect(self.handle_exit)
 # code sử lý load data lên trang DSBH
     def loaddata(self):
         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
@@ -350,13 +350,9 @@ class Banhang(QMainWindow, DSBH):
            #self.tableWidget.setItem(tablerow, 8, QTableWidgetItem(str(row[8])))
            #self.tableWidget.setItem(tablerow, 9, QTableWidgetItem(str(row[9])))
            tablerow += 1
+    def handle_exit(self):
+        self.btnbackMN_2.clicked.connect(QApplication.instance().exit)
+       
 #---------------------------------------------------------------------------------------------
-app = QApplication (sys.argv) 
-Widget = QtWidgets.QStackedWidget()
-Banhang_show = Banhang() 
-Widget.addWidget(Banhang_show)  
-Widget.setFixedHeight(1000) 
-Widget.setFixedWidth(1300) 
-Widget.show()
-app.exec()
+
 

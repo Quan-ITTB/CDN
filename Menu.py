@@ -8,6 +8,7 @@
 from  PyQt6 import QtCore,QtGui,QtWidgets,uic
 from PyQt6.QtWidgets import *
 from DSBH import Banhang
+from nhanvien import Ui_AgentWindow
 from PyQt6.uic import loadUi
 
 import sys
@@ -16,7 +17,7 @@ import MySQLdb as mdb
 # Code sử lý giao diện của File Menu.ui khi chuyển qua
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
+        MainWindow.setObjectName("Home")
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -85,14 +86,48 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
         self.btn_exit.clicked.connect(QApplication.instance().exit)
 # xử lý sự kiện khi click vào DS Bán hàng trang đó sẽ hiện lên
         self.btn_qlbh.clicked.connect(self.show_DSBH) 
+        self.btn_qlnv.clicked.connect(self.show_DSNV) 
         
 # code tab bán hàng
     def show_DSBH(self):
         # Tạo một instance của trang DSBH
         self.dsbh_window = Banhang()
         # Hiển thị trang DSBH
-        self.dsbh_window.show()   
+        self.dsbh_window.show()
+        # self.dsbh_window.closeEvent.connect(self.show_Menu)   
+    def show_Menu(self):
+        self.show()
 
+    def show_DSNV(self):
+        # Tạo một instance của trang DSBH
+        self.dsnv_window = NhanVien()
+        # Hiển thị trang DSBH
+        self.dsnv_window.show()
+        # self.dsbh_window.closeEvent.connect(self.show_Menu) 
+class NhanVien(QMainWindow, Ui_AgentWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self) 
+        self.loaddata()
+    def loaddata(self):
+        db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
+        query = db.cursor()
+        query.execute("SELECT * FROM tblNhanvien")
+        results = query.fetchall()
+        self.WidgetDSNV.setRowCount(len(results))
+        tablerow =0
+        for row in results: 
+           self.WidgetDSNV.setItem(tablerow, 0, QTableWidgetItem(str(row[0])))
+           self.WidgetDSNV.setItem(tablerow, 1, QTableWidgetItem(str(row[1])))
+           self.WidgetDSNV.setItem(tablerow, 2, QTableWidgetItem(str(row[2])))
+           self.WidgetDSNV.setItem(tablerow, 3, QTableWidgetItem(str(row[3])))
+           self.WidgetDSNV.setItem(tablerow, 4, QTableWidgetItem(str(row[4])))
+           self.WidgetDSNV.setItem(tablerow, 5, QTableWidgetItem(str(row[5])))
+           self.WidgetDSNV.setItem(tablerow, 6, QTableWidgetItem(str(row[6])))
+           self.WidgetDSNV.setItem(tablerow, 7, QTableWidgetItem(str(row[7])))
+           self.WidgetDSNV.setItem(tablerow, 8, QTableWidgetItem(str(row[8])))
+           tablerow += 1
+        
 app = QApplication (sys.argv) 
 Widget = QtWidgets.QStackedWidget()
 MenuT1 = MenuTong() 

@@ -3,10 +3,10 @@ from login import Ui_LoginWindow
 from home import Ui_HomeWindow
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
-
+from newmain import Ui_Home_Window
 import sys
 import MySQLdb as mdb
-
+from DSBH import Banhang
 
 data = "test"
 
@@ -238,9 +238,13 @@ class RegisterWindow(QMainWindow, Ui_registerWindow):
             except mdb.Error as err:
                 print(f"Lỗi MySQL: {err}")
                 QMessageBox.critical(self, "Lỗi", "Đã xảy ra lỗi khi thực thi.")
-        
+class MenuWindow(QMainWindow, Ui_Home_Window):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
 app = QApplication([])
 login_window = LoginWindow()
+menu_window = MenuWindow()
 register_window = RegisterWindow()
 home_window = HomeWindow()
 login_window.login_success_signal.dataChanged.connect(home_window.receiveData)
@@ -248,6 +252,6 @@ register_window.register_success_signal.dataChanged.connect(login_window.receive
 
 home_window.login_signal.dataChanged.connect(login_window.show)
 home_window.register_signal.dataChanged.connect(register_window.receiveData)
-login_window.show()
+menu_window.show()
 app.exec()
 

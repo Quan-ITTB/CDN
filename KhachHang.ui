@@ -17,8 +17,8 @@
    <widget class="QGroupBox" name="hoadobanhang_2">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>60</y>
+      <x>30</x>
+      <y>40</y>
       <width>781</width>
       <height>521</height>
      </rect>
@@ -248,11 +248,11 @@
      <property name="columnCount">
       <number>4</number>
      </property>
-     <attribute name="horizontalHeaderMinimumSectionSize">
-      <number>48</number>
-     </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>146</number>
+     </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>48</number>
      </attribute>
      <column>
       <property name="text">
