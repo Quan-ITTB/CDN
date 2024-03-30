@@ -112,6 +112,18 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
         # Hiển thị trang DSBH
         self.dsnv_window.show()
         # self.dsbh_window.closeEvent.connect(self.show_Menu) 
+# code tab nhập hàng hàng
+    def show_DSNH(self):
+        # Tạo một instance của trang DSBH
+        self.dsnh_window = Nhaphang()
+        self.dsnh_window.show()
+        # Hiển thị trang DSBH
+        # code tab bảo hành 
+    def show_DSBaoHanh(self):
+        # Tạo một instance của trang DSBH
+        self.dsbaohanh_window = Baohanh()
+        # Hiển thị trang DSBH
+        self.dsbaohanh_window.show() 
 class NhanVien(QMainWindow, Ui_AgentWindow):
     def __init__(self):
         super().__init__()
@@ -135,22 +147,8 @@ class NhanVien(QMainWindow, Ui_AgentWindow):
            self.WidgetDSNV.setItem(tablerow, 7, QTableWidgetItem(str(row[7])))
            self.WidgetDSNV.setItem(tablerow, 8, QTableWidgetItem(str(row[8])))
            tablerow += 1
-        
-        
-        self.dsbh_window.show()   
-# code tab nhập hàng hàng
-    def show_DSNH(self):
-        # Tạo một instance của trang DSBH
-        self.dsnh_window = Nhaphang()
-        # Hiển thị trang DSBH
-        # code tab bảo hành 
-    def show_DSBaoHanh(self):
-        # Tạo một instance của trang DSBH
-        self.dsbaohanh_window = Baohanh()
-        # Hiển thị trang DSBH
-        self.dsbaohanh_window.show() 
 
-        self.dsnh_window.show() 
+
 app = QApplication (sys.argv) 
 Widget = QtWidgets.QStackedWidget()
 MenuT1 = MenuTong() 

@@ -15,7 +15,7 @@ import MySQLdb as mdb
 class Ui_QuanLyBaoHanh(object):
     def setupUi(self, QuanLyBaoHanh):
         QuanLyBaoHanh.setObjectName("QuanLyBaoHanh")
-        QuanLyBaoHanh.resize(704, 600)
+        QuanLyBaoHanh.resize(1230, 878)
         self.centralwidget = QtWidgets.QWidget(parent=QuanLyBaoHanh)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(parent=self.centralwidget)
