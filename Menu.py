@@ -8,6 +8,7 @@
 from  PyQt6 import QtCore,QtGui,QtWidgets,uic
 from PyQt6.QtWidgets import *
 from DSBH import Banhang
+from DSHDN import Nhaphang
 from BaoHanh import Baohanh
 from PyQt6.uic import loadUi
 
@@ -86,9 +87,13 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
         self.btn_exit.clicked.connect(QApplication.instance().exit)
 # xử lý sự kiện khi click vào DS Bán hàng trang đó sẽ hiện lên
         self.btn_qlbh.clicked.connect(self.show_DSBH) 
+# xử lý sự kiện khi click vào DS Bán hàng trang đó sẽ hiện lên
+        self.btn_qlnh.clicked.connect(self.show_DSNH) 
+
+        
 # xử lý sự kiện khi click vào DS Bảo hành trang đó sẽ hiện lên
         self.btn_qlbhanh.clicked.connect(self.show_DSBaoHanh) 
-        
+
 # code tab bán hàng
     def show_DSBH(self):
         # Tạo một instance của trang DSBH
@@ -96,13 +101,19 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
         # Hiển thị trang DSBH
         
         self.dsbh_window.show()   
-# code tab bảo hành 
+# code tab nhập hàng hàng
+    def show_DSNH(self):
+        # Tạo một instance của trang DSBH
+        self.dsnh_window = Nhaphang()
+        # Hiển thị trang DSBH
+        # code tab bảo hành 
     def show_DSBaoHanh(self):
         # Tạo một instance của trang DSBH
         self.dsbaohanh_window = Baohanh()
         # Hiển thị trang DSBH
         self.dsbaohanh_window.show() 
 
+        self.dsnh_window.show() 
 app = QApplication (sys.argv) 
 Widget = QtWidgets.QStackedWidget()
 MenuT1 = MenuTong() 
