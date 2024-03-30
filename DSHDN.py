@@ -215,10 +215,10 @@ class DSHDN(object):
         font.setWeight(50)
         self.label_31.setFont(font)
         self.label_31.setObjectName("label_31")
-        self.txDonGia_3 = QtWidgets.QLineEdit(parent=self.groupBox_6)
-        self.txDonGia_3.setGeometry(QtCore.QRect(160, 120, 211, 20))
-        self.txDonGia_3.setText("")
-        self.txDonGia_3.setObjectName("txDonGia_3")
+        self.txTDonGia_3 = QtWidgets.QLineEdit(parent=self.groupBox_6)
+        self.txTDonGia_3.setGeometry(QtCore.QRect(160, 120, 211, 20))
+        self.txTDonGia_3.setText("")
+        self.txTDonGia_3.setObjectName("txtDonGia_3")
         self.label = QtWidgets.QLabel(parent=self.centralwidget)
         self.label.setGeometry(QtCore.QRect(430, 0, 411, 41))
         font = QtGui.QFont()
@@ -285,10 +285,12 @@ class Nhaphang(QMainWindow, DSHDN):
         self.setupUi(self)
         self.btnbackMN_1.clicked.connect(QApplication.instance().exit)
         self.btnthem1.clicked.connect(self.insertHDN)
-        #self.btnthem2.clicked.connect(self.insertCTN)
+        self.btnthem2.clicked.connect(self.insertCTN)
         self.loaddata()
         self.loaddata1()
-# code sử lý load data lên trang DSBH
+        self.WidgetDSNH_3.cellClicked.connect(self.show_selected_data)
+        self.WidgetDSNHCT_3.cellClicked.connect(self.show_selected_data2)
+# code sử lý load data lên trang DSNH
     def loaddata(self):
         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
         query = db.cursor()
@@ -359,33 +361,52 @@ class Nhaphang(QMainWindow, DSHDN):
             # Đóng kết nối với cơ sở dữ liệu
             db.close()
 #code xử lý insert hóa đơn chi tiết
-#     def insertCTN(self):
-#         mahd = self.txtMaHD.text()
-#         masp = self.txtMaSP.text()
-#         soluong = self.txtSL_3.text()
-#         #dongianhap = self.txtDonGia_3()
-#         if not all([mahd, masp, soluong]):
-#             QMessageBox.warning(self, "Lỗi", "Vui lòng nhập đầy đủ thông tin!")
-#             return
-#         try:
-#             # Kết nối đến cơ sở dữ liệu
-#             db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
-#             query = db.cursor()
-#             # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
-#             query.callproc('InsertCTNhap', (mahd,masp, soluong))
+    def insertCTN(self):
+        mahd = self.txtMaHD.text()
+        masp = self.txtMaSP.text()
+        soluong = self.txtSL_3.text()
+        dongianhap = self.txtDonGia_3()
+        if not all([mahd, masp, soluong,dongianhap]):
+            QMessageBox.warning(self, "Lỗi", "Vui lòng nhập đầy đủ thông tin!")
+            return
+        try:
+            # Kết nối đến cơ sở dữ liệu
+            db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
+            query = db.cursor()
+            # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
+            query.callproc('InsertCTNhap', (mahd,masp, soluong, dongianhap))
     
-#             db.commit()
+            db.commit()
 
-#             # Thông báo thành công và làm mới dữ liệu trên giao diện
-#             QMessageBox.information(self, "Thành công", "Thêm dữ liệu thành công!")
-#             self.loaddata()  # Làm mới dữ liệu sau khi thêm
-#         except Exception as e:
-#             # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
-#             db.rollback()
-#             QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
-#         finally:
-#             # Đóng kết nối với cơ sở dữ liệu
-#             db.close()
+            # Thông báo thành công và làm mới dữ liệu trên giao diện
+            QMessageBox.information(self, "Thành công", "Thêm dữ liệu thành công!")
+            self.loaddata()  # Làm mới dữ liệu sau khi thêm
+        except Exception as e:
+            # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
+            db.rollback()
+            QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
+        finally:
+            # Đóng kết nối với cơ sở dữ liệu
+            db.close()
+#hiển thị thông tin bang hoa don
+    def show_selected_data(self, row, column):
+        try:
+            # Hiển thị dữ liệu từ hàng được chọn lên các QLineEdit
+            self.txtMaHD.setText(self.WidgetDSNH_3.item(row, 0).text())
+            self.txtMaNV.setText(self.WidgetDSNH_3.item(row, 1).text())
+            self.txtNgayLap.setText(self.WidgetDSNH_3.item(row, 2).text())
+            self.txtTennhaPP.setText(self.WidgetDSNH_3.item(row, 3).text())
+        except Exception as e:
+            print(f"Error in show_selected_data: {e}")
 
-
+#hiển thị thông tin bang chi tiet hoa don
+    def show_selected_data2(self, row, column):
+        try:
+            # Hiển thị dữ liệu từ hàng được chọn lên các QLineEdit
+            self.txtMaHD_5.setText(self.WidgetDSNHCT_3.item(row, 0).text())
+            self.txtMaSP.setText(self.WidgetDSNHCT_3.item(row, 1).text())
+            self.txtSL_3.setText(self.WidgetDSNHCT_3.item(row, 2).text())
+            self.txTDonGia_3.setText(self.WidgetDSNHCT_3.item(row, 3).text())
+        except Exception as e:
+            print(f"Error in show_selected_data: {e}")
 # #---------------------------------------------------------------------------------------------

@@ -535,7 +535,7 @@
        <string>Đơn Giá Nhập</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="txDonGia_3">
+     <widget class="QLineEdit" name="txtDonGia_3">
       <property name="geometry">
        <rect>
         <x>160</x>
