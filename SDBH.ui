@@ -43,7 +43,7 @@
       </rect>
      </property>
      <property name="columnCount">
-      <number>6</number>
+      <number>7</number>
      </property>
      <attribute name="horizontalHeaderMinimumSectionSize">
       <number>48</number>
@@ -59,6 +59,11 @@
      <column>
       <property name="text">
        <string>Mã Nhân Viên</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Tên Nhân Viên</string>
       </property>
      </column>
      <column>
