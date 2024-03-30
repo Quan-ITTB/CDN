@@ -8,6 +8,7 @@
 from  PyQt6 import QtCore,QtGui,QtWidgets,uic
 from PyQt6.QtWidgets import *
 from DSBH import Banhang
+from BaoHanh import Baohanh
 from PyQt6.uic import loadUi
 
 import sys
@@ -50,7 +51,7 @@ class Ui_MainWindow(object):
         self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(250, 130, 281, 191))
         self.label_3.setText("")
-        self.label_3.setPixmap(QtGui.QPixmap("../Downloads/1.jpg"))
+        self.label_3.setPixmap(QtGui.QPixmap("anhgiaodien.jpg"))
         self.label_3.setScaledContents(True)
         self.label_3.setObjectName("label_3")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -85,6 +86,8 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
         self.btn_exit.clicked.connect(QApplication.instance().exit)
 # xử lý sự kiện khi click vào DS Bán hàng trang đó sẽ hiện lên
         self.btn_qlbh.clicked.connect(self.show_DSBH) 
+# xử lý sự kiện khi click vào DS Bảo hành trang đó sẽ hiện lên
+        self.btn_qlbhanh.clicked.connect(self.show_DSBaoHanh) 
         
 # code tab bán hàng
     def show_DSBH(self):
@@ -93,6 +96,12 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
         # Hiển thị trang DSBH
         
         self.dsbh_window.show()   
+# code tab bảo hành 
+    def show_DSBaoHanh(self):
+        # Tạo một instance của trang DSBH
+        self.dsbaohanh_window = Baohanh()
+        # Hiển thị trang DSBH
+        self.dsbaohanh_window.show() 
 
 app = QApplication (sys.argv) 
 Widget = QtWidgets.QStackedWidget()

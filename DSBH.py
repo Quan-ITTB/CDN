@@ -351,12 +351,12 @@ class Banhang(QMainWindow, DSBH):
            #self.tableWidget.setItem(tablerow, 9, QTableWidgetItem(str(row[9])))
            tablerow += 1
 #---------------------------------------------------------------------------------------------
-app = QApplication (sys.argv) 
-Widget = QtWidgets.QStackedWidget()
-Banhang_show = Banhang() 
-Widget.addWidget(Banhang_show)  
-Widget.setFixedHeight(1000) 
-Widget.setFixedWidth(1300) 
-Widget.show()
-app.exec()
+# app = QApplication (sys.argv) 
+# Widget = QtWidgets.QStackedWidget()
+# Banhang_show = Banhang() 
+# Widget.addWidget(Banhang_show)  
+# Widget.setFixedHeight(1000) 
+# Widget.setFixedWidth(1300) 
+# Widget.show()
+# app.exec()
 
