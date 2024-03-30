@@ -288,6 +288,8 @@ class Nhaphang(QMainWindow, DSHDN):
         #self.btnthem2.clicked.connect(self.insertCTN)
         self.loaddata()
         self.loaddata1()
+        self.WidgetDSNH_3.cellClicked.connect(self.show_selected_data)
+        self.WidgetDSNHCT_3.cellClicked.connect(self.show_selected_data_ct)
 # code sử lý load data lên trang DSBH
     def loaddata(self):
         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
@@ -386,6 +388,25 @@ class Nhaphang(QMainWindow, DSHDN):
 #         finally:
 #             # Đóng kết nối với cơ sở dữ liệu
 #             db.close()
-
+# show dữ liệu lên text box lên DSBH
+    def show_selected_data(self, row, column):
+        try:
+            # Hiển thị dữ liệu từ hàng được chọn lên các QLineEdit
+            self.txtMaHD.setText(self.WidgetDSNH_3.item(row, 0).text())
+            self.txtMaNV.setText(self.WidgetDSNH_3.item(row, 1).text())
+            self.txtNgayLap.setText(self.WidgetDSNH_3.item(row, 2).text())
+            self.txtTennhaPP.setText(self.WidgetDSNH_3.item(row,3).text())
+        except Exception as e:
+            print(f"Error in show_selected_data: {e}")       
+# show dữ liệu lên text box lên DSBH chi tiết
+    def show_selected_data_ct(self, row, column):
+        try:
+            # Hiển thị dữ liệu từ hàng được chọn lên các QLineEdit
+            self.txtMaHD_5.setText(self.WidgetDSNHCT_3.item(row, 0).text())
+            self.txtMaSP.setText(self.WidgetDSNHCT_3.item(row, 1).text())
+            self.txtSL_3.setText(self.WidgetDSNHCT_3.item(row, 2).text())
+            self.txDonGia_3.setText(self.WidgetDSNHCT_3.item(row,3).text())
+        except Exception as e:
+            print(f"Error in show_selected_data: {e}")  
 
 # #---------------------------------------------------------------------------------------------
