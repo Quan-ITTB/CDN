@@ -279,7 +279,7 @@ class DSBH(object):
         self.label_7.setText(_translate("MainWindow", "Mã Nhân Viên"))
         self.label_13.setText(_translate("MainWindow", "Ngày Lập"))
         self.label_5.setText(_translate("MainWindow", "Mã Hóa Đơn"))
-        self.label_6.setText(_translate("MainWindow", "Tên Khách Hàng"))
+        self.label_6.setText(_translate("MainWindow", "SDT Khách Hàng"))
         self.label_15.setText(_translate("MainWindow", "HT thanh toán"))
         self.hoadobanhang_3.setTitle(_translate("MainWindow", "Danh Sách Hóa Đơn Chi Tiết"))
         item = self.WidgetDSBHCT.horizontalHeaderItem(0)
@@ -308,6 +308,8 @@ class Banhang(QMainWindow, DSBH):
         self.loaddata()
         self.loaddata1()
         self.btnbackMN_2.clicked.connect(self.handle_exit)
+        self.WidgetDSBH.cellClicked.connect(self.show_selected_data)
+        self.WidgetDSBHCT.cellClicked.connect(self.show_selected_data_ct)
 # code sử lý load data lên trang DSBH
     def loaddata(self):
         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
@@ -352,7 +354,36 @@ class Banhang(QMainWindow, DSBH):
            tablerow += 1
     def handle_exit(self):
         self.btnbackMN_2.clicked.connect(QApplication.instance().exit)
-       
+# show dữ liệu lên text box lên DSBH
+    def show_selected_data(self, row, column):
+        try:
+            # Hiển thị dữ liệu từ hàng được chọn lên các QLineEdit
+            self.txtMaHD_1.setText(self.WidgetDSBH.item(row, 0).text())
+            self.txtMaNV_1.setText(self.WidgetDSBH.item(row, 1).text())
+            self.txtNgayLap_1.setText(self.WidgetDSBH.item(row, 2).text())
+            self.txtTenKhach_1.setText(self.WidgetDSBH.item(row,3).text())
+            self.txtHTTT.setText(self.WidgetDSBH.item(row, 4).text())
+            # self.txtSdtNCC.setText(self.tableWidget.item(row, 4).text())
+            # self.txtSoLuong.setText(self.tableWidget.item(row, 5).text())
+            # self.txtNVLap.setText(self.tableWidget.item(row, 6).text())
+            # self.txtNgayNhap.setText(self.tableWidget.item(row, 7).text())
+        except Exception as e:
+            print(f"Error in show_selected_data: {e}")       
+# show dữ liệu lên text box lên DSBH chi tiết
+    def show_selected_data_ct(self, row, column):
+        try:
+            # Hiển thị dữ liệu từ hàng được chọn lên các QLineEdit
+            self.txtMaHD_2.setText(self.WidgetDSBHCT.item(row, 0).text())
+            self.txtMaSP_2.setText(self.WidgetDSBHCT.item(row, 1).text())
+            self.txtSL.setText(self.WidgetDSBHCT.item(row, 2).text())
+            self.txDonGia.setText(self.WidgetDSBHCT.item(row,3).text())
+            #self.txtHTTT.setText(self.WidgetDSBH.item(row, 4).text())
+            # self.txtSdtNCC.setText(self.tableWidget.item(row, 4).text())
+            # self.txtSoLuong.setText(self.tableWidget.item(row, 5).text())
+            # self.txtNVLap.setText(self.tableWidget.item(row, 6).text())
+            # self.txtNgayNhap.setText(self.tableWidget.item(row, 7).text())
+        except Exception as e:
+            print(f"Error in show_selected_data: {e}")  
 #---------------------------------------------------------------------------------------------
 
 
