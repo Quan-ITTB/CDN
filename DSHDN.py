@@ -389,11 +389,11 @@ class Nhaphang(QMainWindow, DSHDN):
 
 
 # #---------------------------------------------------------------------------------------------
-app = QApplication (sys.argv) 
-Widget = QtWidgets.QStackedWidget()
-Nhaphang_show = Nhaphang() 
-Widget.addWidget(Nhaphang_show)  
-Widget.setFixedHeight(1000) 
-Widget.setFixedWidth(1300) 
-Widget.show()
-app.exec()
+# app = QApplication (sys.argv) 
+# Widget = QtWidgets.QStackedWidget()
+# Nhaphang_show = Nhaphang() 
+# Widget.addWidget(Nhaphang_show)  
+# Widget.setFixedHeight(1000) 
+# Widget.setFixedWidth(1300) 
+# Widget.show()
+# app.exec()

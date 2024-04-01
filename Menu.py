@@ -89,7 +89,6 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
         self.btn_qlbh.clicked.connect(self.show_DSBH) 
 # xử lý sự kiện khi click vào DS Bán hàng trang đó sẽ hiện lên
         self.btn_qlnh.clicked.connect(self.show_DSNH) 
-
         
 # xử lý sự kiện khi click vào DS Bảo hành trang đó sẽ hiện lên
         self.btn_qlbhanh.clicked.connect(self.show_DSBaoHanh) 
@@ -105,6 +104,8 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
     def show_DSNH(self):
         # Tạo một instance của trang DSBH
         self.dsnh_window = Nhaphang()
+        self.dsnh_window.show() 
+
         # Hiển thị trang DSBH
         # code tab bảo hành 
     def show_DSBaoHanh(self):
@@ -113,7 +114,6 @@ class MenuTong(QMainWindow,Ui_MainWindow ):
         # Hiển thị trang DSBH
         self.dsbaohanh_window.show() 
 
-        self.dsnh_window.show() 
 app = QApplication (sys.argv) 
 Widget = QtWidgets.QStackedWidget()
 MenuT1 = MenuTong() 
