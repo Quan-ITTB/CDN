@@ -384,6 +384,13 @@ class Banhang(QMainWindow, DSBH):
             # self.txtNgayNhap.setText(self.tableWidget.item(row, 7).text())
         except Exception as e:
             print(f"Error in show_selected_data: {e}")  
-#---------------------------------------------------------------------------------------------
+# code sử lý khi sửa thuộc tính
+#     def update_DSBH(self):
+#         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
+#         query = db.cursor()
+#         query.execute("update tblhdxuat set sMaHDX='"+txtMaHD_2+"',MaSP='"+masp+"',TenSP='"+tensp+"',soluong = '"+soluong+"',dongia ='"+dongia+"',tongtien = '"+tongtien+"',Baohanh = '"+baohanh+"'where MaHD = '"+mahd+"' ")
+#         db.commit()
+#         self.loaddata()
+# #---------------------------------------------------------------------------------------------
 
 
