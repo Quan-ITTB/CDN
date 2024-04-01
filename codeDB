@@ -230,6 +230,36 @@ BEGIN
     SET fTongTien = fTongTien + NEW.iSoLuong * NEW.fDonGiaXuat
     WHERE sMaHDX = maHD;
 END;
-//
+// 
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE InsertInto_tblbaohanh(
+    IN p_sMaBH VARCHAR(255),
+    IN p_sMaSP VARCHAR(255),
+    IN p_sMaHDX VARCHAR(255),
+    IN p_sMaNV VARCHAR(255),
+    IN p_sGhiChu VARCHAR(255)
+)
+BEGIN
+    INSERT INTO tblbaohanh (sMaBH, sMaSP, sMaHDX, sMaNV, sGhiChu)
+    VALUES (p_sMaBH, p_sMaSP, p_sMaHDX, p_sMaNV, p_sGhiChu);
+END //
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE Update_tblctxuat(
+    IN p_sMaHDX VARCHAR(255),
+    IN p_sMaSP VARCHAR(255),
+    IN p_iSoLuong INT,
+    IN p_fDonGiaXuat FLOAT
+)
+BEGIN
+    UPDATE tblctxuat
+    SET iSoLuong = p_iSoLuong,
+        fDonGiaXuat = p_fDonGiaXuat
+    WHERE sMaHDX = p_sMaHDX AND sMaSP = p_sMaSP;
+END //
 
 DELIMITER ;
