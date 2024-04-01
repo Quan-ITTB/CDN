@@ -285,7 +285,8 @@ class Nhaphang(QMainWindow, DSHDN):
         self.setupUi(self)
         self.btnbackMN_1.clicked.connect(QApplication.instance().exit)
         self.btnthem1.clicked.connect(self.insertHDN)
-        #self.btnthem2.clicked.connect(self.insertCTN)
+        self.btnxoa1.clicked.connect(self.delete_data)
+        self.btnthem2.clicked.connect(self.insertCTN)
         self.loaddata()
         self.loaddata1()
         self.WidgetDSNH_3.cellClicked.connect(self.show_selected_data)
@@ -361,33 +362,33 @@ class Nhaphang(QMainWindow, DSHDN):
             # Đóng kết nối với cơ sở dữ liệu
             db.close()
 #code xử lý insert hóa đơn chi tiết
-#     def insertCTN(self):
-#         mahd = self.txtMaHD.text()
-#         masp = self.txtMaSP.text()
-#         soluong = self.txtSL_3.text()
-#         #dongianhap = self.txtDonGia_3()
-#         if not all([mahd, masp, soluong]):
-#             QMessageBox.warning(self, "Lỗi", "Vui lòng nhập đầy đủ thông tin!")
-#             return
-#         try:
-#             # Kết nối đến cơ sở dữ liệu
-#             db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
-#             query = db.cursor()
-#             # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
-#             query.callproc('InsertCTNhap', (mahd,masp, soluong))
-    
-#             db.commit()
+    def insertCTN(self):
+        mahd = self.txtMaHD.text()
+        masp = self.txtMaSP.text()
+        soluong = self.txtSL_3.text()
+        dongianhap = self.txtDonGia_3.text()
+        if not all([mahd, masp, soluong, dongianhap]):
+            QMessageBox.warning(self, "Lỗi", "Vui lòng nhập đầy đủ thông tin!")
+            return
+        try:
+            # Kết nối đến cơ sở dữ liệu
+            db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
+            query = db.cursor()
+            # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
+            query.callproc('InsertCTHDIfExist', (mahd, masp, soluong, dongianhap))
+            db.commit()
 
-#             # Thông báo thành công và làm mới dữ liệu trên giao diện
-#             QMessageBox.information(self, "Thành công", "Thêm dữ liệu thành công!")
-#             self.loaddata()  # Làm mới dữ liệu sau khi thêm
-#         except Exception as e:
-#             # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
-#             db.rollback()
-#             QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
-#         finally:
-#             # Đóng kết nối với cơ sở dữ liệu
-#             db.close()
+            # Thông báo thành công và làm mới dữ liệu trên giao diện
+            result = query.fetchone()
+            QMessageBox.information(self, "Thành công", result[0])
+            self.loaddata1()  # Làm mới dữ liệu sau khi thêm
+        except Exception as e:
+            # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
+            db.rollback()
+            QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
+        finally:
+            # Đóng kết nối với cơ sở dữ liệu
+            db.close()
 # show dữ liệu lên text box lên DSBH
     def show_selected_data(self, row, column):
         try:
@@ -408,5 +409,70 @@ class Nhaphang(QMainWindow, DSHDN):
             self.txDonGia_3.setText(self.WidgetDSNHCT_3.item(row,3).text())
         except Exception as e:
             print(f"Error in show_selected_data: {e}")  
+    def delete_data(self):
+        mahd = self.txtMaHD.text()
+        if not mahd:
+                QMessageBox.warning(self,"Error","Vui lòng nhập hóa đơn cần xóa")
+                return
+        reply = QMessageBox.question(self, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa dữ liệu này?',
+                                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if reply ==QMessageBox.StandardButton.Yes:
+            try:
+                db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
+                query = db.cursor()
+            # Tạo câu lệnh SQL để xóa dữ liệu từ bảng dựa trên mã hóa đơn
+                query.callproc('DeleteHDNhap', [mahd])
+  
+            # Thông báo thành công
+                QMessageBox.information(self, "Success", "xóa dữ liệu thành công!")
 
+            # Sau khi xóa dữ liệu thành công, làm mới bảng
+                self.loaddata()
+                self.loaddata1()
+            except Exception as e:
+            # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
+                db.rollback()
+                QMessageBox.warning(self, "Error", f"Đã xảy ra lỗi: {str(e)}")
+            finally:
+            # Đóng kết nối với cơ sở dữ liệu
+             db.close()
+        else:
+              QMessageBox.information(self, "Thông báo", "Hủy xóa dữ liệu!")
+    def delete_data2(self):
+        masp = self.txtMaSP.text()
+        if not masp:
+                QMessageBox.warning(self,"Error","Vui lòng nhập hóa đơn cần xóa")
+                return
+        reply = QMessageBox.question(self, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa dữ liệu này?',
+                                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if reply ==QMessageBox.StandardButton.Yes:
+            try:
+                db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
+                query = db.cursor()
+            # Tạo câu lệnh SQL để xóa dữ liệu từ bảng dựa trên mã hóa đơn
+                query.callproc('DeleteProductFromCTNhap', [masp])
+  
+            # Thông báo thành công
+                QMessageBox.information(self, "Success", "xóa dữ liệu thành công!")
+
+            # Sau khi xóa dữ liệu thành công, làm mới bảng
+                self.loaddata1()
+            except Exception as e:
+            # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
+                db.rollback()
+                QMessageBox.warning(self, "Error", f"Đã xảy ra lỗi: {str(e)}")
+            finally:
+            # Đóng kết nối với cơ sở dữ liệu
+             db.close()
+        else:
+              QMessageBox.information(self, "Thông báo", "Hủy xóa dữ liệu!")
+app = QApplication(sys.argv) 
+Widget = QtWidgets.QStackedWidget()
+phieunk = Nhaphang() 
+phieunk.show()
+Widget.addWidget(phieunk)  
+Widget.setFixedHeight(1000) 
+Widget.setFixedWidth(1500) 
+Widget.show()
+sys.exit(app.exec())
 # #---------------------------------------------------------------------------------------------
