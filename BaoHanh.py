@@ -154,7 +154,7 @@ class Baohanh(QMainWindow, Ui_QuanLyBaoHanh):
         super().__init__()
         self.setupUi(self)
         # xử lý sk nút thoát
-        self.pushButton.clicked.connect(QApplication.instance().exit)
+        self.pushButton.clicked.connect(self.close_window)
         # gọi hàm xử hiện dự liệu từ widget lên các text
         self.tableWidget.cellClicked.connect(self.show_selected_data)
         # gọi hàm load dữ liệu 
@@ -166,7 +166,9 @@ class Baohanh(QMainWindow, Ui_QuanLyBaoHanh):
         # xử lý nút xóa 
         self.btnXoa.clicked.connect(self.xoaBH)
 
-       
+    # code sử lý nút thoát 
+    def close_window(self):
+            self.close()   
 # code sử lý load data lên trang DSBaoHanh
     def loaddata(self):
         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
