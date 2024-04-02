@@ -193,5 +193,3 @@ Widget.setFixedHeight(1000)
 Widget.setFixedWidth(1000) 
 Widget.show()
 app.exec()
-
-#test
