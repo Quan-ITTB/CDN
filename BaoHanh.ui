@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>963</width>
-    <height>552</height>
+    <width>1232</width>
+    <height>878</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,13 +19,13 @@
      <rect>
       <x>340</x>
       <y>0</y>
-      <width>221</width>
+      <width>471</width>
       <height>51</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>10</pointsize>
+      <pointsize>24</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -34,169 +34,18 @@
      <string>QUẢN LÝ BẢO HÀNH </string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>140</y>
-      <width>91</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Mã bảo hành</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>200</y>
-      <width>91</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Mã Sản phẩm</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>250</y>
-      <width>71</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Mã HD Xuất</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>320</y>
-      <width>47</width>
-      <height>14</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Mã NV</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>390</y>
-      <width>47</width>
-      <height>14</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Ghi Chú</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="txtMaBH">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>140</y>
-      <width>141</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="txtMaSP">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>190</y>
-      <width>141</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="txtMaHDX">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>250</y>
-      <width>141</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="txtMaNV">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>320</y>
-      <width>141</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="txtGhiChu">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>380</y>
-      <width>141</width>
-      <height>71</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnThem">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>90</y>
-      <width>71</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Thêm </string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnSua">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>90</y>
-      <width>71</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Sửa</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnXoa">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>90</y>
-      <width>71</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Xóa</string>
-    </property>
-   </widget>
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>150</y>
-      <width>511</width>
-      <height>301</height>
+      <y>130</y>
+      <width>661</width>
+      <height>671</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>132</number>
+    </attribute>
     <column>
      <property name="text">
       <string>Mã BH</string>
@@ -223,17 +72,232 @@
      </property>
     </column>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>450</x>
+      <x>710</x>
+      <y>110</y>
+      <width>501</width>
+      <height>691</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="title">
+     <string>Chức Năng</string>
+    </property>
+    <widget class="QLineEdit" name="txtGhiChu">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>330</y>
+       <width>281</width>
+       <height>71</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="txtMaBH">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>90</y>
+       <width>281</width>
+       <height>41</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>90</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Mã bảo hành</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>150</y>
+       <width>131</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Mã Sản phẩm</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="txtMaNV">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>270</y>
+       <width>281</width>
+       <height>41</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>200</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Mã HD Xuất</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>340</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Ghi Chú</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="txtMaHDX">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>200</y>
+       <width>281</width>
+       <height>51</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="txtMaSP">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>140</y>
+       <width>281</width>
+       <height>41</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>270</y>
+       <width>131</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Mã NV</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnThem">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>460</y>
+       <width>121</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Thêm </string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnSua">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>460</y>
+       <width>111</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Sửa</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnXoa">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>460</y>
+       <width>101</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Xóa</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>580</y>
+       <width>141</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Thoát</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
       <y>90</y>
-      <width>71</width>
+      <width>481</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>Thoát</string>
+     <string>Danh Sách Bảo Hành</string>
     </property>
    </widget>
   </widget>
@@ -242,7 +306,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>963</width>
+     <width>1232</width>
      <height>26</height>
     </rect>
    </property>
