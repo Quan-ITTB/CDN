@@ -15,11 +15,11 @@ import MySQLdb as mdb
 class Ui_QuanLyBaoHanh(object):
     def setupUi(self, QuanLyBaoHanh):
         QuanLyBaoHanh.setObjectName("QuanLyBaoHanh")
-        QuanLyBaoHanh.resize(1230, 878)
+        QuanLyBaoHanh.resize(963, 552)
         self.centralwidget = QtWidgets.QWidget(parent=QuanLyBaoHanh)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(270, 0, 161, 51))
+        self.label.setGeometry(QtCore.QRect(340, 0, 221, 51))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(True)
@@ -27,46 +27,46 @@ class Ui_QuanLyBaoHanh(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(40, 80, 71, 21))
+        self.label_2.setGeometry(QtCore.QRect(570, 140, 91, 21))
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(40, 130, 71, 16))
+        self.label_3.setGeometry(QtCore.QRect(570, 200, 91, 16))
         self.label_3.setObjectName("label_3")
         self.label_4 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(40, 170, 71, 21))
+        self.label_4.setGeometry(QtCore.QRect(570, 250, 71, 21))
         self.label_4.setObjectName("label_4")
         self.label_5 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(320, 80, 47, 14))
+        self.label_5.setGeometry(QtCore.QRect(570, 320, 47, 14))
         self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_6.setGeometry(QtCore.QRect(320, 130, 47, 14))
+        self.label_6.setGeometry(QtCore.QRect(570, 390, 47, 14))
         self.label_6.setObjectName("label_6")
         self.txtMaBH = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.txtMaBH.setGeometry(QtCore.QRect(120, 80, 141, 21))
+        self.txtMaBH.setGeometry(QtCore.QRect(680, 140, 141, 21))
         self.txtMaBH.setObjectName("txtMaBH")
         self.txtMaSP = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.txtMaSP.setGeometry(QtCore.QRect(120, 130, 141, 21))
+        self.txtMaSP.setGeometry(QtCore.QRect(680, 190, 141, 21))
         self.txtMaSP.setObjectName("txtMaSP")
         self.txtMaHDX = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.txtMaHDX.setGeometry(QtCore.QRect(120, 180, 141, 21))
+        self.txtMaHDX.setGeometry(QtCore.QRect(680, 250, 141, 21))
         self.txtMaHDX.setObjectName("txtMaHDX")
         self.txtMaNV = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.txtMaNV.setGeometry(QtCore.QRect(370, 80, 141, 21))
+        self.txtMaNV.setGeometry(QtCore.QRect(680, 320, 141, 21))
         self.txtMaNV.setObjectName("txtMaNV")
         self.txtGhiChu = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.txtGhiChu.setGeometry(QtCore.QRect(370, 130, 141, 71))
+        self.txtGhiChu.setGeometry(QtCore.QRect(680, 380, 141, 71))
         self.txtGhiChu.setObjectName("txtGhiChu")
         self.btnThem = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.btnThem.setGeometry(QtCore.QRect(50, 240, 75, 23))
+        self.btnThem.setGeometry(QtCore.QRect(40, 90, 71, 31))
         self.btnThem.setObjectName("btnThem")
         self.btnSua = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.btnSua.setGeometry(QtCore.QRect(180, 240, 75, 23))
+        self.btnSua.setGeometry(QtCore.QRect(180, 90, 71, 31))
         self.btnSua.setObjectName("btnSua")
         self.btnXoa = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.btnXoa.setGeometry(QtCore.QRect(310, 240, 75, 23))
+        self.btnXoa.setGeometry(QtCore.QRect(320, 90, 71, 31))
         self.btnXoa.setObjectName("btnXoa")
         self.tableWidget = QtWidgets.QTableWidget(parent=self.centralwidget)
-        self.tableWidget.setGeometry(QtCore.QRect(50, 310, 501, 192))
+        self.tableWidget.setGeometry(QtCore.QRect(20, 150, 511, 301))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(5)
         self.tableWidget.setRowCount(0)
@@ -81,11 +81,11 @@ class Ui_QuanLyBaoHanh(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(4, item)
         self.pushButton = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(440, 240, 75, 23))
+        self.pushButton.setGeometry(QtCore.QRect(450, 90, 71, 31))
         self.pushButton.setObjectName("pushButton")
         QuanLyBaoHanh.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=QuanLyBaoHanh)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 704, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 963, 26))
         self.menubar.setObjectName("menubar")
         QuanLyBaoHanh.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(parent=QuanLyBaoHanh)
@@ -118,7 +118,6 @@ class Ui_QuanLyBaoHanh(object):
         item = self.tableWidget.horizontalHeaderItem(4)
         item.setText(_translate("QuanLyBaoHanh", "Ghi Chú"))
         self.pushButton.setText(_translate("QuanLyBaoHanh", "Thoát"))
-
 class Baohanh(QMainWindow, Ui_QuanLyBaoHanh):
     def __init__(self):
         super().__init__()
@@ -129,6 +128,12 @@ class Baohanh(QMainWindow, Ui_QuanLyBaoHanh):
         self.tableWidget.cellClicked.connect(self.show_selected_data)
         # gọi hàm load dữ liệu 
         self.loaddata()
+        #xử lý nút thêm 
+        self.btnThem.clicked.connect(self.themBH)
+        # xử lý  nút sửa 
+        self.btnSua.clicked.connect(self.suaBH)
+        # xử lý nút xóa 
+        self.btnXoa.clicked.connect(self.xoaBH)
 
        
 # code sử lý load data lên trang DSBaoHanh
@@ -157,6 +162,90 @@ class Baohanh(QMainWindow, Ui_QuanLyBaoHanh):
         self.txtMaHDX.setText(self.tableWidget.item(row, 2).text())
         self.txtMaNV.setText(self.tableWidget.item(row, 3).text())
         self.txtGhiChu.setText(self.tableWidget.item(row, 4).text())
+    def themBH (self):
+        maBH = self.txtMaBH.text()
+        maSP = self.txtMaSP.text()
+        maHDX = self.txtMaHDX.text()
+        maNV = self.txtMaNV.text()
+        ghichu = self.txtGhiChu.text()
+        if not all([maBH, maSP, maHDX, maNV, ghichu]):
+            QMessageBox.warning(self, "Lỗi", "Vui lòng nhập đầy đủ thông tin!")
+            return
+        try:
+            # Kết nối đến cơ sở dữ liệu
+            db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
+            query = db.cursor()
+            # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
+            query.callproc('InsertInto_tblbaohanh', (maBH, maSP, maHDX, maNV, ghichu))
+    
+            db.commit()
+
+            # Thông báo thành công và làm mới dữ liệu trên giao diện
+            QMessageBox.information(self, "Thành công", "Thêm dữ liệu thành công!")
+            self.loaddata()  # Làm mới dữ liệu sau khi thêm
+        except Exception as e:
+            # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
+            db.rollback()
+            QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
+        finally:
+            # Đóng kết nối với cơ sở dữ liệu
+            db.close()
+    def suaBH (self):
+        maBH = self.txtMaBH.text()
+        maSP = self.txtMaSP.text()
+        maHDX = self.txtMaHDX.text()
+        maNV = self.txtMaNV.text()
+        ghichu = self.txtGhiChu.text()
+        if not all([maBH, maSP, maHDX, maNV, ghichu]):
+            QMessageBox.warning(self, "Lỗi", "Vui lòng nhập đầy đủ thông tin!")
+            return
+        try:
+            # Kết nối đến cơ sở dữ liệu
+            db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
+            query = db.cursor()
+            # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
+            query.callproc('Update_tblbaohanh', (maBH, maSP, maHDX, maNV, ghichu))
+    
+            db.commit()
+
+            # Thông báo thành công và làm mới dữ liệu trên giao diện
+            QMessageBox.information(self, "Thành công", "Sửa thành công !")
+            self.loaddata()  # Làm mới dữ liệu sau khi thêm
+        except Exception as e:
+            # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
+            db.rollback()
+            QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
+        finally:
+            # Đóng kết nối với cơ sở dữ liệu
+            db.close()
+    
+    
+    def xoaBH(self):
+        maBH = self.txtMaBH.text()
+        # maSP = self.txtMaSP.text()
+        # maHDX = self.txtMaHDX.text()
+        # maNV = self.txtMaNV.text()
+        # ghichu = self.txtGhiChu.text()
+        try:
+            # Kết nối đến cơ sở dữ liệu
+            db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
+            query = db.cursor()
+            # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
+            query.callproc('DeleteFrom_tblbaohanh',(maBH,))
+            db.commit()
+
+            # Thông báo thành công và làm mới dữ liệu trên giao diện
+            QMessageBox.information(self, "Thành công", "Xóa thành công !")
+            self.loaddata()  # Làm mới dữ liệu sau khi thêm
+        except Exception as e:
+            # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
+            db.rollback()
+            QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
+        finally:
+            # Đóng kết nối với cơ sở dữ liệu
+            db.close()
+    
+
 # app = QApplication (sys.argv) 
 # Widget = QtWidgets.QStackedWidget()
 # BaoHanh_show = Baohanh() 
@@ -165,4 +254,3 @@ class Baohanh(QMainWindow, Ui_QuanLyBaoHanh):
 # Widget.setFixedWidth(600) 
 # Widget.show()
 # app.exec()
-
