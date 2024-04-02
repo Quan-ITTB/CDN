@@ -284,11 +284,14 @@ class Nhaphang(QMainWindow, DSHDN):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.btnbackMN_1.clicked.connect(QApplication.instance().exit)
+        self.btnbackMN_1.clicked.connect(self.close_window)
         self.btnthem1.clicked.connect(self.insertHDN)
         #self.btnthem2.clicked.connect(self.insertCTN)
         self.loaddata()
         self.loaddata1()
+    # code sử lý nút thoát 
+    def close_window(self):
+            self.close()
 # code sử lý load data lên trang DSBH
     def loaddata(self):
         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')

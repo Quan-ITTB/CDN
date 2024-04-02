@@ -308,10 +308,10 @@ class Banhang(QMainWindow, DSBH):
         
         self.loaddata()
         self.loaddata1()
-        self.btnbackMN_2.clicked.connect(self.handle_exit)
+        self.btnbackMN_2.clicked.connect(self.close_window)
         self.WidgetDSBH.cellClicked.connect(self.show_selected_data)
         self.WidgetDSBHCT.cellClicked.connect(self.show_selected_data_ct)
-        self.btnbackMN_2.clicked.connect(QApplication.instance().exit)
+        self.btnbackMN_2.clicked.connect(self.close_window)
         self.btnthem_3.clicked.connect(self.insert_data)
 # code sử lý load data lên trang DSBH
     def loaddata(self):
@@ -334,6 +334,9 @@ class Banhang(QMainWindow, DSBH):
            #self.tableWidget.setItem(tablerow, 8, QTableWidgetItem(str(row[8])))
            #self.tableWidget.setItem(tablerow, 9, QTableWidgetItem(str(row[9])))
            tablerow += 1
+# code sử lý nút thoát 
+    def close_window(self):
+            self.close()
 # code sử lý load data lên trang DSBH chi tiết
     def loaddata1(self):
         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
