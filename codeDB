@@ -306,3 +306,81 @@ BEGIN
 END //
 
 DELIMITER ;
+ --xóa hóa đơn nhập:
+ DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteHDNhap`(
+    IN MaHDN VARCHAR(10)
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    -- Xóa tất cả các chi tiết đơn hàng nhập liên quan
+    DELETE FROM tblCTNhap WHERE sMaHDN = MaHDN;
+
+    -- Sau đó xóa mã đơn hàng nhập từ bảng chính
+    DELETE FROM tblHDNhap WHERE sMaHDN = MaHDN;
+
+    COMMIT;
+END//
+DELIMITER ;
+--thêm hóa đơn nhập:
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertHDNhap`(
+    IN p_MaHDN VARCHAR(10),
+    IN p_MaNV VARCHAR(10),
+    IN p_NgayNhap DATE,
+    IN p_TenNCC VARCHAR(25)
+)
+BEGIN
+    INSERT INTO tblHDNhap (sMaHDN, sMaNV, dNgayNhap, sTenNCC)
+    VALUES (p_MaHDN, p_MaNV, p_NgayNhap, p_TenNCC);
+END//
+DELIMITER ;
+--sửa hóa đơn nhập
+DELIMITER //
+
+CREATE PROCEDURE UpdateHDNhap(
+    IN p_sMaHDN VARCHAR(10),
+    IN p_sMaNV VARCHAR(10),
+    IN p_dNgayNhap DATE,
+    IN p_sTenNCC VARCHAR(25)
+)
+BEGIN
+    -- Sửa thông tin trong bảng tblHDNhap
+    UPDATE tblHDNhap
+    SET sMaNV = p_sMaNV,
+        dNgayNhap = p_dNgayNhap,
+        sTenNCC = p_sTenNCC
+    WHERE sMaHDN = p_sMaHDN;
+
+    -- Kết thúc stored procedure
+    END //
+
+DELIMITER ;
+--sửa chi tiết 
+DELIMITER //
+
+CREATE PROCEDURE UpdateCTNhap(
+    IN p_sMaHDN VARCHAR(10),
+    IN p_sMaSP VARCHAR(10),
+    IN p_iSoLuong INT,
+    IN p_fDonGiaNhap FLOAT
+)
+BEGIN
+    -- Sửa thông tin trong bảng tblCTNhap
+    UPDATE tblCTNhap
+    SET iSoLuong = p_iSoLuong,
+        fDonGiaNhap = p_fDonGiaNhap
+    WHERE sMaHDN = p_sMaHDN AND sMaSP = p_sMaSP;
+
+    -- Kết thúc stored procedure
+    END //
+
+DELIMITER ;
+

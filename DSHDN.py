@@ -289,6 +289,7 @@ class Nhaphang(QMainWindow, DSHDN):
         self.btnxoa1.clicked.connect(self.delete_data)
         self.btnthem2.clicked.connect(self.insertCTN)
         self.btnxoa2.clicked.connect(self.delete_data2)
+        self.btnSua1.clicked.connect(self.updateHDN)
         self.btnSua2.clicked.connect(self.updateCTHDN)
         self.loaddata()
         self.loaddata1()
@@ -357,7 +358,7 @@ class Nhaphang(QMainWindow, DSHDN):
 
             # Thông báo thành công và làm mới dữ liệu trên giao diện
             QMessageBox.information(self, "Thành công", "Thêm dữ liệu thành công!")
-            self.loaddata()  # Làm mới dữ liệu sau khi thêm
+            self.loaddata1()  # Làm mới dữ liệu sau khi thêm
         except Exception as e:
             # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
             db.rollback()
@@ -367,11 +368,11 @@ class Nhaphang(QMainWindow, DSHDN):
             db.close()
 #code xử lý insert hóa đơn chi tiết
     def insertCTN(self):
-        mahd = self.txtMaHD.text()
-        masp = self.txtMaSP.text()
-        soluong = self.txtSL_3.text()
-        dongianhap = self.txtDonGia_3.text()
-        if not all([mahd, masp, soluong, dongianhap]):
+        mahd = self.txtMaHD_5.text()
+        manv = self.txtMaSP.text()
+        ngaylap = self.txtSL_3.text()
+        tennpp = self.txDonGia_3.text()
+        if not all([mahd, manv, ngaylap, tennpp]):
             QMessageBox.warning(self, "Lỗi", "Vui lòng nhập đầy đủ thông tin!")
             return
         try:
@@ -379,12 +380,12 @@ class Nhaphang(QMainWindow, DSHDN):
             db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
             query = db.cursor()
             # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
-            query.callproc('InsertCTHDIfExist', (mahd, masp, soluong, dongianhap))
+            query.callproc('InsertCTNhap', (mahd, manv, ngaylap, tennpp))
+    
             db.commit()
 
             # Thông báo thành công và làm mới dữ liệu trên giao diện
-            result = query.fetchone()
-            QMessageBox.information(self, "Thành công", result[0])
+            QMessageBox.information(self, "Thành công", "Thêm dữ liệu thành công!")
             self.loaddata1()  # Làm mới dữ liệu sau khi thêm
         except Exception as e:
             # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
@@ -473,17 +474,17 @@ class Nhaphang(QMainWindow, DSHDN):
         else:
               QMessageBox.information(self, "Thông báo", "Hủy xóa dữ liệu!")
 #code xử lý update hóa đơn chi tiết
-    def updateCTHDN(self):
+    def updateHDN(self):
         mahd = self.txtMaHD.text()
-        masp = self.txtMaSP.text()
-        soluong = self.txtSL_3.text()
-        dongia = self.txDonGia_3.text()
+        manv = self.txtMaNV.text()
+        ngaylap = self.txtNgayLap.text()
+        tennpp = self.txtTennhaPP.text()
         try:
             # Kết nối đến cơ sở dữ liệu
             db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
             query = db.cursor()
             # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
-            query.callproc('UpdateCTHDNhap', (mahd, masp, soluong, dongia))
+            query.callproc('UpdateHDNhap', (mahd, manv, ngaylap, tennpp))
     
             db.commit()
 
@@ -496,4 +497,29 @@ class Nhaphang(QMainWindow, DSHDN):
             QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
         finally:
             # Đóng kết nối với cơ sở dữ liệu
-            db.close()# #---------------------------------------------------------------------------------------------
+            db.close()# #code xử lý update hóa đơn chi tiết
+    def updateCTHDN(self):
+        mahd = self.txtMaHD_5.text()
+        masp = self.txtMaSP.text()
+        soluong = self.txtSL_3.text()
+        dongia = self.txDonGia_3.text()
+        try:
+            # Kết nối đến cơ sở dữ liệu
+            db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
+            query = db.cursor()
+            # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
+            query.callproc('UpdateCTNhap', (mahd, masp, soluong, dongia))
+    
+            db.commit()
+
+            # Thông báo thành công và làm mới dữ liệu trên giao diện
+            QMessageBox.information(self, "Thành công", "Sửa dữ liệu thành công!")
+            self.loaddata1()  # Làm mới dữ liệu sau khi thêm
+        except Exception as e:
+            # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
+            db.rollback()
+            QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
+        finally:
+            # Đóng kết nối với cơ sở dữ liệu
+            db.close()#
+#---------------------------------------------------------------------------------------------
