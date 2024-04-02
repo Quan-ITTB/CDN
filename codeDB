@@ -306,3 +306,16 @@ BEGIN
 END //
 
 DELIMITER ;
+-- chi tiết nhập hàng
+DELIMITER //
+CREATE PROCEDURE InsertInto_tblctxuat(
+    IN p_sMaHDX VARCHAR(255),
+    IN p_sMaSP VARCHAR(255),
+    IN p_iSoLuong INT,
+    IN p_fDonGiaXuat FLOAT
+)
+BEGIN
+    INSERT INTO tblctxuat (sMaHDX, sMaSP, iSoLuong, fDonGiaXuat)
+    VALUES (p_sMaHDX, p_sMaSP, p_iSoLuong, p_fDonGiaXuat);
+END //
+DELIMITER ;
