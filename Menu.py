@@ -13,10 +13,13 @@ from nhanvien import Ui_AgentWindow
 from DSHDN import Nhaphang
 from BaoHanh import Baohanh
 from PyQt6.uic import loadUi
+from PyQt6.QtCore import QDate
 
 import sys
 import MySQLdb as mdb
 
+db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
+# Code sử lý giao diện của File Menu.ui khi chuyển qua
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -144,7 +147,6 @@ class NhanVien(QMainWindow, Ui_AgentWindow):
                         self.WidgetDSNV.setItem(tablerow, 8, QTableWidgetItem(str(row[8])))
                         tablerow += 1
         def click_cell(self, row, column):
-                db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
                 query = db.cursor()
                 query.execute("SELECT * FROM tblNhanvien")
                 results = query.fetchall()
@@ -152,17 +154,24 @@ class NhanVien(QMainWindow, Ui_AgentWindow):
                 self.txt_ma.setText(self.WidgetDSNV.item(row, 0).text())
                 self.txt_ten.setText(self.WidgetDSNV.item(row, 1).text())
                 self.txt_sdt.setText(self.WidgetDSNV.item(row, 5).text())
-                # self.txt_ngaysinh.setDate(self.WidgetDSNV.item(row, 2).text())
+                date_string = self.WidgetDSNV.item(row, 2).text()
+                year, month, day = map(int, date_string.split("-"))
+                date = QDate(year, month, day)
+                self.txt_ngaysinh.setDate(date)
                 if str(self.WidgetDSNV.item(row, 3).text()) == "Nam" :
-                        self.rb_nam.isChecked = True
-                        self.rb_nu.isChecked = False
+                        self.rb_nam.setChecked(True)
+                        self.rb_nu.setChecked(False)
                 else:
-                        self.rb_nu.isChecked = True
-                        self.rb_nam.isChecked = False
+                        self.rb_nam.setChecked(False)
+                        self.rb_nu.setChecked(True)
                 self.txt_hsl.setText(self.WidgetDSNV.item(row, 6).text())
                 self.txt_luong.setText(self.WidgetDSNV.item(row, 7).text())
                 # self.txt_ngayvaolam.setText(self.WidgetDSNV.item(row, 8).text())
 
+                date_string = self.WidgetDSNV.item(row, 8).text()
+                year, month, day = map(int, date_string.split("-"))
+                date = QDate(year, month, day)
+                self.txt_ngayvaolam.setDate(date)
 app = QApplication (sys.argv) 
 
 Widget = QtWidgets.QStackedWidget()

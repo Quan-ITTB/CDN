@@ -247,6 +247,48 @@ BEGIN
 END //
 DELIMITER ;
 
+-- thủ tục thêm bảo hành 
+DELIMITER //
+CREATE PROCEDURE InsertInto_tblbaohanh(
+    IN p_sMaBH VARCHAR(255),
+    IN p_sMaSP VARCHAR(255),
+    IN p_sMaHDX VARCHAR(255),
+    IN p_sMaNV VARCHAR(255),
+    IN p_sGhiChu VARCHAR(255)
+)
+BEGIN
+    INSERT INTO tblbaohanh (sMaBH, sMaSP, sMaHDX, sMaNV, sGhiChu)
+    VALUES (p_sMaBH, p_sMaSP, p_sMaHDX, p_sMaNV, p_sGhiChu);
+END //
+DELIMITER ;
+-- Thủ tục sửa bảo hành 
+DELIMITER //
+CREATE PROCEDURE Update_tblbaohanh(
+    IN p_sMaBH VARCHAR(255),
+    IN p_sMaSP VARCHAR(255),
+    IN p_sMaHDX VARCHAR(255),
+    IN p_sMaNV VARCHAR(255),
+    IN p_sGhiChu VARCHAR(255)
+)
+BEGIN
+    UPDATE tblbaohanh
+    SET sMaSP = p_sMaSP,
+        sMaHDX = p_sMaHDX,
+        sMaNV = p_sMaNV,
+        sGhiChu = p_sGhiChu
+    WHERE sMaBH = p_sMaBH;
+END //
+DELIMITER ;
+-- thủ tục xóa bảo hành 
+DELIMITER //
+
+CREATE PROCEDURE DeleteFrom_tblbaohanh(
+    IN p_sMaBH VARCHAR(255) -- Tham số cho khóa chính sMaBH
+)
+BEGIN
+    -- Xóa giá trị từ bảng tblbaohanh
+    DELETE FROM tblbaohanh WHERE sMaBH = p_sMaBH;
+
 DELIMITER //
 
 CREATE PROCEDURE Update_tblctxuat(
@@ -260,6 +302,7 @@ BEGIN
     SET iSoLuong = p_iSoLuong,
         fDonGiaXuat = p_fDonGiaXuat
     WHERE sMaHDX = p_sMaHDX AND sMaSP = p_sMaSP;
+
 END //
 
 DELIMITER ;
