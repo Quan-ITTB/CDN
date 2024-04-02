@@ -288,11 +288,14 @@ class Nhaphang(QMainWindow, DSHDN):
         self.btnthem1.clicked.connect(self.insertHDN)
         self.btnxoa1.clicked.connect(self.delete_data)
         self.btnthem2.clicked.connect(self.insertCTN)
+        self.btnxoa2.clicked.connect(self.delete_data2)
+        self.btnSua2.clicked.connect(self.updateCTHDN)
         self.loaddata()
         self.loaddata1()
         self.WidgetDSNH_3.cellClicked.connect(self.show_selected_data)
         self.WidgetDSNHCT_3.cellClicked.connect(self.show_selected_data_ct)
-# code sử lý load data lên trang DSBH
+        
+# code sử lý load data lên trang DSNH
     def loaddata(self):
         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
         query = db.cursor()
@@ -313,7 +316,7 @@ class Nhaphang(QMainWindow, DSHDN):
            #self.tableWidget.setItem(tablerow, 8, QTableWidgetItem(str(row[8])))
            #self.tableWidget.setItem(tablerow, 9, QTableWidgetItem(str(row[9])))
            tablerow += 1
-# code sử lý load data lên trang DSBH chi tiết
+# code sử lý load data lên trang DSNH chi tiết
     def loaddata1(self):
         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
         query = db.cursor()
@@ -390,7 +393,7 @@ class Nhaphang(QMainWindow, DSHDN):
         finally:
             # Đóng kết nối với cơ sở dữ liệu
             db.close()
-# show dữ liệu lên text box lên DSBH
+# show dữ liệu lên text box lên DSNH
     def show_selected_data(self, row, column):
         try:
             # Hiển thị dữ liệu từ hàng được chọn lên các QLineEdit
@@ -400,7 +403,7 @@ class Nhaphang(QMainWindow, DSHDN):
             self.txtTennhaPP.setText(self.WidgetDSNH_3.item(row,3).text())
         except Exception as e:
             print(f"Error in show_selected_data: {e}")       
-# show dữ liệu lên text box lên DSBH chi tiết
+# show dữ liệu lên text box lên DSNH chi tiết
     def show_selected_data_ct(self, row, column):
         try:
             # Hiển thị dữ liệu từ hàng được chọn lên các QLineEdit
@@ -410,6 +413,7 @@ class Nhaphang(QMainWindow, DSHDN):
             self.txDonGia_3.setText(self.WidgetDSNHCT_3.item(row,3).text())
         except Exception as e:
             print(f"Error in show_selected_data: {e}")  
+#xóa hóa đơn nhập
     def delete_data(self):
         mahd = self.txtMaHD.text()
         if not mahd:
@@ -439,6 +443,7 @@ class Nhaphang(QMainWindow, DSHDN):
              db.close()
         else:
               QMessageBox.information(self, "Thông báo", "Hủy xóa dữ liệu!")
+#xóa chi tiết hóa đơn nhập
     def delete_data2(self):
         masp = self.txtMaSP.text()
         if not masp:
@@ -467,6 +472,31 @@ class Nhaphang(QMainWindow, DSHDN):
              db.close()
         else:
               QMessageBox.information(self, "Thông báo", "Hủy xóa dữ liệu!")
+#code xử lý update hóa đơn chi tiết
+    def updateCTHDN(self):
+        mahd = self.txtMaHD.text()
+        masp = self.txtMaSP.text()
+        soluong = self.txtSL_3.text()
+        dongia = self.txDonGia_3.text()
+        try:
+            # Kết nối đến cơ sở dữ liệu
+            db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
+            query = db.cursor()
+            # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
+            query.callproc('UpdateCTHDNhap', (mahd, masp, soluong, dongia))
+    
+            db.commit()
+
+            # Thông báo thành công và làm mới dữ liệu trên giao diện
+            QMessageBox.information(self, "Thành công", "Sửa dữ liệu thành công!")
+            self.loaddata()  # Làm mới dữ liệu sau khi thêm
+        except Exception as e:
+            # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
+            db.rollback()
+            QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
+        finally:
+            # Đóng kết nối với cơ sở dữ liệu
+            db.close()
 app = QApplication(sys.argv) 
 Widget = QtWidgets.QStackedWidget()
 phieunk = Nhaphang() 

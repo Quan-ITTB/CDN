@@ -264,11 +264,10 @@ class FullScreenApp(QMainWindow):
                 self.txt_luong.setText(self.WidgetDSNV.item(row, 7).text())
                 # self.txt_ngayvaolam.setText(self.WidgetDSNV.item(row, 8).text())
 app = QApplication (sys.argv) 
-
 Widget = QtWidgets.QStackedWidget()
 MenuT1 = MenuTong() 
 Widget.addWidget(MenuT1)  
-Widget.setFixedHeight(1000) 
+Widget.setFixedHeight(1800) 
 Widget.setFixedWidth(1000) 
 Widget.show()
 app.exec()
