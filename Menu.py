@@ -162,26 +162,6 @@ class NhanVien(QMainWindow, Ui_AgentWindow):
                 self.txt_hsl.setText(self.WidgetDSNV.item(row, 6).text())
                 self.txt_luong.setText(self.WidgetDSNV.item(row, 7).text())
                 # self.txt_ngayvaolam.setText(self.WidgetDSNV.item(row, 8).text())
-class FullScreenApp(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Full Screen App")
-
-        # Tạo widget chính để chứa các widget khác
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
-        
-        layout = QVBoxLayout(central_widget)
-
-        # Tạo QStackedWidget để chứa các trang khác nhau
-        self.stacked_widget = QStackedWidget()
-        layout.addWidget(self.stacked_widget)
-
-        # Thêm các trang vào QStackedWidget
-        MenuT1 = MenuTong()
-        self.stacked_widget.addWidget(MenuT1)
-# Hiển thị giao diện người dùng theo kích thước màn hình
-        self.showFullScreen()
 
 app = QApplication (sys.argv) 
 
