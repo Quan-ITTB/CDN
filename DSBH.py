@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import *
 from PyQt6.uic import loadUi
 import sys
 import MySQLdb as mdb
+#import pymysql
 # code sử lý giao diện .UI
 class DSBH(object):
     def setupUi(self, MainWindow):
@@ -304,12 +305,14 @@ class Banhang(QMainWindow, DSBH):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.btnbackMN_2.clicked.connect(QApplication.instance().exit)
+        
         self.loaddata()
         self.loaddata1()
         self.btnbackMN_2.clicked.connect(self.handle_exit)
         self.WidgetDSBH.cellClicked.connect(self.show_selected_data)
         self.WidgetDSBHCT.cellClicked.connect(self.show_selected_data_ct)
+        self.btnbackMN_2.clicked.connect(QApplication.instance().exit)
+        self.btnthem_3.clicked.connect(self.insert_data)
 # code sử lý load data lên trang DSBH
     def loaddata(self):
         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
@@ -384,6 +387,38 @@ class Banhang(QMainWindow, DSBH):
             # self.txtNgayNhap.setText(self.tableWidget.item(row, 7).text())
         except Exception as e:
             print(f"Error in show_selected_data: {e}")  
-#---------------------------------------------------------------------------------------------
 
+# code sử lý khi sửa thuộc tính các nút button
+     # code xử lý thêm 1 trường dữ liệu mới
+    def insert_data(self):
+        sMaHDX = self.txtMaHD_2.text()
+        sMaSP = self.txtMaSP_2.text()
+        iSoLuong = int(self.txtSL.text())
+        fDonGiaXuat = float(self.txDonGia.text())
+        try:
+            # Kết nối đến cơ sở dữ liệu
+            db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
+            query = db.cursor()
+            # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
+            query.callproc("InsertInto_tblctxuat", (sMaHDX, sMaSP, iSoLuong, fDonGiaXuat))
+    
+            db.commit()
+
+            # Thông báo thành công và làm mới dữ liệu trên giao diện
+            QMessageBox.information(self, "Thành công", "Thêm dữ liệu thành công!")
+            self.loaddata1()  # Làm mới dữ liệu sau khi thêm
+        except Exception as e:
+            # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
+            db.rollback()
+            QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
+        finally:
+            # Đóng kết nối với cơ sở dữ liệu
+            db.close()
+#     def update_DSBH(self):
+#         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
+#         query = db.cursor()
+#         query.execute("update tblhdxuat set sMaHDX='"+txtMaHD_2+"',MaSP='"+masp+"',TenSP='"+tensp+"',soluong = '"+soluong+"',dongia ='"+dongia+"',tongtien = '"+tongtien+"',Baohanh = '"+baohanh+"'where MaHD = '"+mahd+"' ")
+#         db.commit()
+#         self.loaddata()
+# #---------------------------------------------------------------------------------------------
 
