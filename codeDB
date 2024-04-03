@@ -306,6 +306,7 @@ BEGIN
 END //
 
 DELIMITER ;
+<<<<<<< HEAD
  --xóa hóa đơn nhập:
  DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteHDNhap`(
@@ -384,3 +385,18 @@ BEGIN
 
 DELIMITER ;
 
+=======
+-- chi tiết nhập hàng
+DELIMITER //
+CREATE PROCEDURE InsertInto_tblctxuat(
+    IN p_sMaHDX VARCHAR(255),
+    IN p_sMaSP VARCHAR(255),
+    IN p_iSoLuong INT,
+    IN p_fDonGiaXuat FLOAT
+)
+BEGIN
+    INSERT INTO tblctxuat (sMaHDX, sMaSP, iSoLuong, fDonGiaXuat)
+    VALUES (p_sMaHDX, p_sMaSP, p_iSoLuong, p_fDonGiaXuat);
+END //
+DELIMITER ;
+>>>>>>> 6db2d18ce9812c5f6c8d5b3271b5bbf8e1e4ed53
