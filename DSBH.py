@@ -313,6 +313,7 @@ class Banhang(QMainWindow, DSBH):
         self.WidgetDSBHCT.cellClicked.connect(self.show_selected_data_ct)
         self.btnbackMN_2.clicked.connect(self.close_window)
         self.btnthem_3.clicked.connect(self.insert_data)
+        self.btnSua_3.clicked.connect(self.suaBH)
 # code sử lý load data lên trang DSBH
     def loaddata(self):
         db= mdb.connect('localhost','root','','kinhdoanhmaytinh')
@@ -408,6 +409,34 @@ class Banhang(QMainWindow, DSBH):
 
             # Thông báo thành công và làm mới dữ liệu trên giao diện
             QMessageBox.information(self, "Thành công", "Thêm dữ liệu thành công!")
+            self.loaddata1()  # Làm mới dữ liệu sau khi thêm
+        except Exception as e:
+            # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
+            db.rollback()
+            QMessageBox.warning(self, "Lỗi", f"Đã xảy ra lỗi: {str(e)}")
+        finally:
+            # Đóng kết nối với cơ sở dữ liệu
+            db.close()
+# code sửa bán hàng
+    def suaBH (self):
+        sMaHDX = self.txtMaHD_2.text()
+        sMaSP = self.txtMaSP_2.text()
+        iSoLuong = int(self.txtSL.text())
+        fDonGiaXuat = float(self.txDonGia.text())
+        if not all([sMaHDX, sMaSP,iSoLuong, fDonGiaXuat]):
+            QMessageBox.warning(self, "Lỗi", "Vui lòng nhập đầy đủ thông tin!")
+            return
+        try:
+            # Kết nối đến cơ sở dữ liệu
+            db = mdb.connect('localhost', 'root', '', 'kinhdoanhmaytinh')
+            query = db.cursor()
+            # Thực thi câu lệnh SQL để thêm dữ liệu vào cơ sở dữ liệu
+            query.callproc('Update_tblctxuat', (sMaHDX, sMaSP,iSoLuong, fDonGiaXuat))
+    
+            db.commit()
+
+            # Thông báo thành công và làm mới dữ liệu trên giao diện
+            QMessageBox.information(self, "Thành công", "Sửa thành công !")
             self.loaddata1()  # Làm mới dữ liệu sau khi thêm
         except Exception as e:
             # Trong trường hợp có lỗi, rollback và hiển thị thông báo lỗi
