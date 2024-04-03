@@ -247,20 +247,7 @@ BEGIN
 END //
 DELIMITER ;
 
--- thủ tục thêm bảo hành 
-DELIMITER //
-CREATE PROCEDURE InsertInto_tblbaohanh(
-    IN p_sMaBH VARCHAR(255),
-    IN p_sMaSP VARCHAR(255),
-    IN p_sMaHDX VARCHAR(255),
-    IN p_sMaNV VARCHAR(255),
-    IN p_sGhiChu VARCHAR(255)
-)
-BEGIN
-    INSERT INTO tblbaohanh (sMaBH, sMaSP, sMaHDX, sMaNV, sGhiChu)
-    VALUES (p_sMaBH, p_sMaSP, p_sMaHDX, p_sMaNV, p_sGhiChu);
-END //
-DELIMITER ;
+
 -- Thủ tục sửa bảo hành 
 DELIMITER //
 CREATE PROCEDURE Update_tblbaohanh(
@@ -289,6 +276,9 @@ BEGIN
     -- Xóa giá trị từ bảng tblbaohanh
     DELETE FROM tblbaohanh WHERE sMaBH = p_sMaBH;
 
+END //
+DELIMITER ;
+
 DELIMITER //
 
 CREATE PROCEDURE Update_tblctxuat(
@@ -306,3 +296,77 @@ BEGIN
 END //
 
 DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE InsertInto_tblctxuat(
+    IN p_sMaHDX VARCHAR(255),
+    IN p_sMaSP VARCHAR(255),
+    IN p_iSoLuong INT,
+    IN p_fDonGiaXuat FLOAT
+)
+BEGIN
+    INSERT INTO tblctxuat (sMaHDX, sMaSP, iSoLuong, fDonGiaXuat)
+    VALUES (p_sMaHDX, p_sMaSP, p_iSoLuong, p_fDonGiaXuat);
+END //
+DELIMITER ;
+
+-- insert nhan vien
+DELIMITER //
+CREATE PROCEDURE InsertInto_tblnhanvien(
+    p_sMaNV VARCHAR(255),
+    p_TenNV VARCHAR(25) ,
+    p_dNgaySinh DATE ,
+    p_sGioiTinh ENUM('Nam', 'Nữ'),
+    p_sDiaChi VARCHAR(50),
+    p_sSDT VARCHAR(10),
+    p_fHSL FLOAT ,
+    p_fLCB FLOAT ,
+    p_dNgayVaoLam DATE
+)
+BEGIN
+    INSERT INTO tblnhanvien
+    VALUES (p_sMaNV, p_TenNV, p_dNgaySinh, p_sGioiTinh, p_sDiaChi, p_sSDT, p_fHSL, p_fLCB, p_dNgayVaoLam);
+END //
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE Update_tblnhanvien(
+    IN p_sMaNV VARCHAR(255),
+    IN p_TenNV VARCHAR(255),
+    IN p_dNgaySinh DATE,
+    IN p_sGioiTinh VARCHAR(255),
+    IN p_sDiaChi VARCHAR(255),
+    IN p_sSDT VARCHAR(10),
+    IN p_fHSL FLOAT,
+    IN p_fLCB FLOAT,
+    IN p_dNgayVaoLam DATE
+)
+BEGIN
+    UPDATE tblnhanvien
+    SET sTenNV = p_TenNV,
+        dNgaySinh = p_dNgaySinh,
+        sGioiTinh = p_sGioiTinh,
+        sDiaChi = p_sDiaChi,
+        sSDT = p_sSDT,
+        fHSL = p_fHSL,
+        fLCB = p_fLCB,
+        dNgayVaoLam = p_dNgayVaoLam 
+    WHERE sMaNV = p_sMaNV;
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE DeleteFrom_tblnhanvien(
+    IN p_sMaNV VARCHAR(255) 
+)
+BEGIN
+    DELETE FROM tblnhanvien WHERE sMaNV = p_sMaNV;
+END
+
+
+
